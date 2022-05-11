@@ -4,9 +4,10 @@ var router = express.Router();
 const req = require('express/lib/request');
 const passport = require('passport');
 
-var usersCtrl = require('../controllers/usersCtrl');
+var profileCtrl = require('../controllers/profileCtrl');
 
+router.get('/:id/edit', profileCtrl.editProfile);
+router.put('/:id', profileCtrl.updateProfile);
 
-router.get('/populate', usersCtrl.populateDB);
 
 module.exports = router;

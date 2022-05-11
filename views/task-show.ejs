@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY PROJECT</title>
+</head>
+<body>
+    Project Name: <%=project.name%><br>
+
+    
+    <form action="/projects/<%=project._id%>/task/<%=task._id%>?_method=PUT" method="POST">
+        <label for="taskName">Task Name</label>
+        <input required name="taskName" type="text" placeholder="<%=task.name%>">
+        <label for="assignedTo">Assigned To:</label>
+        <select name="assignedTo" id="assignedTo">
+        <option value="">--Please choose an option--</option>
+        <%for (let i=0; i<users.length; i++){%>
+            <option value="<%=users[i]._id%>"><%=users[i].name%></option>
+        <%}%>
+        </select>
+        <button>Submit</button>
+    </form>
+    <br>
+
+    <form method="POST" action="/projects/<%=project._id%>/task/<%=task._id%>/destroy?_method=DELETE" >
+        <button>Delete Task</button>
+    </form>
+    <br>
+    <a href="/projects/<%=project._id%>">Back to Project</a>
+
+    <br>
+<br>
+<a href="/dashboard">Dashboard</a>
+
+</body>
+</html>

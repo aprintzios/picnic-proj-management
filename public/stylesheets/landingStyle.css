@@ -1,0 +1,27 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-color: #E2FFB8;
+  height: 80vh;
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+}
+#getStarted {
+  background-color: lavender;
+	border-radius:28px;
+  border:1px solid lavender;
+	display:inline-block;
+	cursor: pointer;
+  font-family:Arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-decoration:none;
+  color: whitesmoke;
+}
+#lpForm{
+  align-self: center;
+}
+#landingImgDiv {
+  align-self: center;
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY PROJECT</title>
+</head>
+<body>
+    Project Name: <%=project.name%><br>
+    Group Members:
+    <a href="/projects/<%=project._id%>/new-member">Add Group Members</a>
+    <ul>
+    <%if (project.groupMembers){%>
+        <%for (let i=0; i< project.groupMembers.length; i++){%>
+            <li><%=project.groupMembers[i].name%> <span><form method="POST" action="/projects/<%=project._id%>/member/<%=project.groupMembers[i]._id%>/destroy?_method=DELETE"><button>x</button></form></span></li>
+        <%}%>
+    <%}%>
+</ul>
+
+    All tasks: <br>
+    <ul>
+    <%if (project.tasks){%>
+       <% for (let i=0; i<project.tasks.length; i++){%>
+        <li><%=project.tasks[i].name%> <a href="/projects/<%=project._id%>/task/<%=project.tasks[i]._id%>">Edit</a></li>
+       <% }%>
+    <%}%>
+    </ul>
+
+    Add task: <br>
+    <form action="/projects/<%=project._id%>/task" method="POST">
+        <label for="taskName">TASK NAME:</label>
+        <input required type="text" name="taskName">
+        <label for="assignedTo">Assigned To:</label>
+        <select name="assignedTo" id="assignedTo">
+        <option value="">--Please choose an option--</option>
+        <%for (let i=0; i<users.length; i++){%>
+            <option value="<%=users[i]._id%>"><%=users[i].name%></option>
+        <%}%>
+        </select>
+        <button>ADD Task</button>
+    </form>
+
+    <br>
+<br>
+<a href="/dashboard">Dashboard</a>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADD MEMBER</title>
+</head>
+
+<body>
+    Project Name: <%=project.name%> <br>
+        Group Members: <br>
+        <ul>
+            <%for (let i=0; i<project.groupMembers.length; i++){%>
+                <li>
+                    <%=project.groupMembers[i].name%>
+                </li>
+                <%}%>
+        </ul>
+
+        <%=project.groupMembers[0]._id%>
+            <%=users[0]._id%>
+        <form action="/projects/<%=project._id%>/addMember" method="POST">
+            <label for="user-select">Users:</label>
+            <select required name="newMember" id="user-select">
+                <option value="">--Please choose an option--</option>
+                <%for (let i=0; i<users.length; i++){%>
+                    <%if (project.groupMembers.filter(e => e._id == users[i]._id)) { %>              
+                    <option value="<%=users[i]._id%>"><%=users[i].name%></option>
+                <%}%>
+                <%}%>
+            </select>
+            <button>ADD Member</button>
+        </form>
+
+        <br>
+        <a href="/projects/<%=project._id%>/">Back to Project</a>
+        <br>
+        <a href="/dashboard">Dashboard</a>
+</body>
+
+</html>

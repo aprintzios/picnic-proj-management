@@ -1,0 +1,48 @@
+body {
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100vw;
+}
+a {
+    text-decoration: none;
+    color: black;
+}
+#sidenav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    border-right: solid #A6FD29;
+}
+#userNav {
+    flex: 1;
+    border-bottom: solid #ED3895;
+    display: flex;
+    align-items: center;
+    justify-content:space-evenly;
+}
+
+#sideContent {
+    padding-top: 2rem;
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+#mainSec {
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+}
+#mainHeader {
+    flex: 1;
+    background-color: #6FFDE1;
+    color: #F506A9;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 6rem;
+}
+#mainContent {
+    flex: 5;
+}
