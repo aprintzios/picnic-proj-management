@@ -6,13 +6,14 @@ let User = require('../models/user');
 async function newProject(req, res) {
     var newProject = new Project({
         name: req.body.projectName,
-        groupMembers: [],
+        createdBy: req.user.id,
+        groupMembers: [req.user.id],
         tasks: []
     });
-    //append new project to user project list
     await newProject.save();
-    req.user.projects.push(newProject._id);
-    await req.user.save();
+    //add current user to 
+    //req.user.projects.push(newProject._id);
+    //await req.user.save();
     res.redirect('/dashboard');
 }
 
@@ -22,9 +23,18 @@ async function showProject(req, res) {
     let project = await Project.findById(projectId);
     //populate members
     await project.populate('groupMembers');
+    await project.populate('tasks.assignedTo');
+
     //get Users
     let users = await User.find();
-    res.render('project-show', { project, users});
+    let user = req.user;
+    let userProjects = await Project.find({ groupMembers: { "$in" : [user._id]} });
+    console.log("req user", req.user);
+    res.render('project-show', { project, users, user, userProjects});
+}
+
+async function deleteProject(req, res){
+
 }
 
 async function addTask(req, res) {
@@ -33,9 +43,9 @@ async function addTask(req, res) {
     //create new task
     let newTask = {
         name: req.body.taskName,
-        // assignedTo: {type: Schema.Types.ObjectId, ref: 'User'},
-        // due: Date,
-        // status: String
+        assignedTo: req.body.assignedTo,
+        due: req.body.dueDate,
+        status: req.body.status
     }
     //get project 
     let project = await Project.findById(projectId);
@@ -43,6 +53,7 @@ async function addTask(req, res) {
     project.tasks.push(newTask);
     //save
     await project.save();
+
     //redirect to /project/:id
     res.redirect('/projects/' + projectId);
 }
@@ -53,6 +64,7 @@ async function showTask(req, res) {
     let taskId = req.params.taskId;
     //get project
     let project = await Project.findById(projectId);
+    await project.populate('groupMembers');
     //find task
     for (let i = 0; i < project.tasks.length; i++) {
         if (project.tasks[i]._id == taskId) {
@@ -82,6 +94,7 @@ async function editTask(req, res) {
 }
 
 async function deleteTask(req, res) {
+    console.log("in delete task");
     let taskId = req.params.taskId;
     //get project
     let projectId = req.params.id;
@@ -132,7 +145,6 @@ async function deleteMember(req, res){
     await project.populate('groupMembers');
     //remove groupMember from project
     for (let i=0; i<project.groupMembers.length; i++){
-        console.log("group member i", project.groupMembers[i]._id.valueOf());
         if (project.groupMembers[i]._id.valueOf() === userId){
             project.groupMembers.splice(i,1);
         }
@@ -144,6 +156,7 @@ async function deleteMember(req, res){
 module.exports = {
     newProject,
     showProject,
+    deleteProject,
     addTask,
     showTask,
     editTask,

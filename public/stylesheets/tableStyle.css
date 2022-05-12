@@ -1,0 +1,25 @@
+
+table {
+    table-layout: fixed;
+    width: 90%;
+    font-family: 'Open Sans', sans-serif;
+  }
+
+
+td {
+    padding: 1em;
+    text-align: center;
+}
+
+th {
+    padding: 1em;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.tableTitle {
+      padding: 2rem;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 2rem;
+
+  }

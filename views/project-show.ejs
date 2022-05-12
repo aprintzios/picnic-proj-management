@@ -1,32 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MY PROJECT</title>
+    <link rel="stylesheet" href="/stylesheets/dashboardStyle.css">
+    <link rel="stylesheet" href="/stylesheets/tableStyle.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
 </head>
+
 <body>
-    Project Name: <%=project.name%><br>
-    Group Members:
-    <a href="/projects/<%=project._id%>/new-member">Add Group Members</a>
-    <ul>
-    <%if (project.groupMembers){%>
-        <%for (let i=0; i< project.groupMembers.length; i++){%>
-            <li><%=project.groupMembers[i].name%> <span><form method="POST" action="/projects/<%=project._id%>/member/<%=project.groupMembers[i]._id%>/destroy?_method=DELETE"><button>x</button></form></span></li>
-        <%}%>
-    <%}%>
-</ul>
+    <div id="sidenav">
+        <div id="userNav">
+            <%= user.name%>
+                <form action="/profile/<%=user._id%>/edit">
+                    <button>EDIT PROFILE</button>
+                </form>
+                <form action="/logout">
+                    <button>LOGOUT</button>
+                </form>
+        </div>
+        <div id="sideContent">
+            <%if(user.projects){%>
+                <%for (let i=0; i<userProjects.length; i++){%>
+                    <div> <a href="/projects/<%=userProjects[i]._id%>">
+                            <%=userProjects[i].name%>
+                        </a> </div>
+                    <%}%>
+                        <%}%>
+                            <div>
+                                <a href="/projects/new"> + NEW PROJECT</a>
+                            </div>
+        </div>
+    </div>
+    <div id="mainSec">
+        <div id="mainHeader">
+            <%=project.name%>
+        </div>
+        <div id="mainContent">
 
-    All tasks: <br>
-    <ul>
-    <%if (project.tasks){%>
+          
+
+            <div class="tableTitle"> GROUP MEMBERS </div>
+            <table id="dashboardTaskTable">
+                <th class="dasboardTaskHeader">MEMBER</th>
+                <th class="dasboardTaskHeader">ACTION</th>
+                <%if (project.groupMembers){%>
+                    <%for (let i=0; i< project.groupMembers.length; i++){%>
+                        <tr class="dasboardTaskRow">
+                            <td class="dasboardTaskCell">
+                                <%=project.groupMembers[i].name%> 
+                                   
+                            </td>
+                            <td class="dasboardTaskCell">
+                                <form method="POST"
+                                            action="/projects/<%=project._id%>/member/<%=project.groupMembers[i]._id%>/destroy?_method=DELETE">
+                                            <button>x</button></form>
+                            </td>
+                        </tr>
+                        <%}%>
+                            <%}%>
+            </table>
+
+
+            <div class="tableTitle"> ALL TASKS </div>
+            <table id="dashboardTaskTable">
+                <th class="dasboardTaskHeader">TASK</th>
+                <th class="dasboardTaskHeader">ASSIGNED TO</th>
+                <th class="dasboardTaskHeader">DUE</th>
+                <th class="dasboardTaskHeader">STATUS</th>
+                <th class="dasboardTaskHeader">ACTIONS</th>
+                <%if (project.tasks){%>
+                    <% for (let i=0; i<project.tasks.length; i++){%>
+                        <tr class="dasboardTaskRow">
+                            <td class="dasboardTaskCell">
+                                <%=project.tasks[i].name%>
+                            </td>
+                            <td class="dasboardTaskCell">
+                                <%=project.tasks[i].assignedTo.name%>
+                            </td>
+                            <td class="dasboardTaskCell">
+                                <%=project.tasks[i].due.toDateString()%>
+                            </td>
+                            <td class="dasboardTaskCell">
+                                <%=project.tasks[i].status%>
+                            </td>
+                            <td class="dasboardTaskCell">
+                                <a href="/projects/<%=project._id%>/task/<%=project.tasks[i]._id%>">Edit</a>
+                                <form method="POST"
+                                    action="/projects/<%=project._id%>/task/<%=project.tasks[i]._id%>/destroy?_method=DELETE">
+                                    <button>Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <%}%>
+                            <%}%>
+
+
+                                <tr class="dasboardTaskRow">
+                                    <form action="/projects/<%=project._id%>/task" method="POST">
+                                        <td class="dasboardTaskCell">
+
+                                            <input required type="text" name="taskName">
+                                        </td>
+
+                                        <td class="dasboardTaskCell">
+                                            <select required name="assignedTo" id="assignedTo">
+                                                <option value="">--Please choose an option--</option>
+                                                <%for (let i=0; i<project.groupMembers.length; i++){%>
+                                                    <option value="<%=project.groupMembers[i]._id%>">
+                                                        <%=project.groupMembers[i].name%>
+                                                    </option>
+                                                    <%}%>
+                                            </select>
+                                        </td>
+                                        <td class="dasboardTaskCell">
+                                            <input required type="date" id="dueDate" name="dueDate">
+                                        </td>
+
+                                        <td class="dasboardTaskCell">
+                                            <select required name="status" id="status">
+                                                <option value="">--Please choose an option--</option>
+                                                <option value="icebox">Icebox</option>
+                                                <option value="current">Current/MVP</option>
+                                                <option value="completed">Completed</option>
+                                            </select>
+                                        </td>
+                                        <td class="dasboardTaskCell">
+
+                                            <button>ADD Task</button>
+                                        </td>
+                                    </form>
+                                </tr>
+            </table>
+
+            <br>
+            <br>
+            <a href="/dashboard">Dashboard</a>
+            <form method="" POST action="/projects/<%=project._id%>">
+                <button>Delete Project</button>
+            </form>
+
+
+<!-- 
+            Group Members:
+            <a href="/projects/<%=project._id%>/new-member">Add Group Members</a>
+            <ul>
+                <%if (project.groupMembers){%>
+                    <%for (let i=0; i< project.groupMembers.length; i++){%>
+                        <li>
+                            <%=project.groupMembers[i].name%> <span>
+                                    <form method="POST"
+                                        action="/projects/<%=project._id%>/member/<%=project.groupMembers[i]._id%>/destroy?_method=DELETE">
+                                        <button>x</button></form>
+                                </span>
+                        </li>
+                        <%}%>
+                            <%}%>
+            </ul>
+             -->
+            <!-- <%if (project.tasks){%>
        <% for (let i=0; i<project.tasks.length; i++){%>
-        <li><%=project.tasks[i].name%> <a href="/projects/<%=project._id%>/task/<%=project.tasks[i]._id%>">Edit</a></li>
+        <li>Task: <%=project.tasks[i].name%> <br> Assigned To: <%=project.tasks[i].assignedTo.name%> <br> Due: <%=project.tasks[i].due%> <br> 
+            Status: <%=project.tasks[i].status%> <br> <a href="/projects/<%=project._id%>/task/<%=project.tasks[i]._id%>">Edit</a>
+            <form method="POST" action="/projects/<%=project._id%>/task/<%=project.tasks[i]._id%>/destroy?_method=DELETE">
+            <button>Delete</button>
+        </form>
+        </li>
        <% }%>
-    <%}%>
-    </ul>
-
+    <%}%> -->
+            <!-- 
     Add task: <br>
     <form action="/projects/<%=project._id%>/task" method="POST">
         <label for="taskName">TASK NAME:</label>
@@ -34,15 +184,26 @@
         <label for="assignedTo">Assigned To:</label>
         <select name="assignedTo" id="assignedTo">
         <option value="">--Please choose an option--</option>
-        <%for (let i=0; i<users.length; i++){%>
-            <option value="<%=users[i]._id%>"><%=users[i].name%></option>
+        <%for (let i=0; i<project.groupMembers.length; i++){%>
+            <option value="<%=project.groupMembers[i]._id%>"><%=project.groupMembers[i].name%></option>
         <%}%>
         </select>
-        <button>ADD Task</button>
-    </form>
+        <label for="dueDate">Due</label>
+        <input type="date" id="dueDate" name="dueDate">
 
-    <br>
-<br>
-<a href="/dashboard">Dashboard</a>
+        <label for="status">Status:</label>
+        <select name="status" id="status">
+        <option value="">--Please choose an option--</option>
+            <option value="icebox">Icebox</option>
+            <option value="current">Current/MVP</option>
+            <option value="completed">Completed</option>
+        </select>
+        <button>ADD Task</button>
+    </form> -->
+
+
+        </div>
+
 </body>
+
 </html>

@@ -7,9 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="/stylesheets/dashboardStyle.css">
+    <link rel="stylesheet" href="/stylesheets/tableStyle.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -26,9 +30,9 @@
         </div>
         <div id="sideContent">
             <%if(user.projects){%>
-                <%for (let i=0; i<user.projects.length; i++){%>
-                    <div> <a href="/projects/<%=user.projects[i]._id%>">
-                            <%=user.projects[i].name%>
+                <%for (let i=0; i<userProjects.length; i++){%>
+                    <div> <a href="/projects/<%=userProjects[i]._id%>">
+                            <%=userProjects[i].name%>
                         </a> </div>
                     <%}%>
                         <%}%>
@@ -42,7 +46,33 @@
             MY DASHBOARD
         </div>
         <div id="mainContent">
-            All my tasks
+            <div class="tableTitle"> MY TASKS </div>
+            <table id="dashboardTaskTable">
+                <th class="dasboardTaskHeader">Task</th>
+                <th class="dasboardTaskHeader">Project</th>
+                <th class="dasboardTaskHeader">Due</th>
+                <th class="dasboardTaskHeader">Status</th>
+                <%if (userTasks){%>
+                    <%for (let i=0; i<userTasks.length; i++){%>
+                        <tr class="dasboardTaskRow">
+                            <td class="dasboardTaskCell">
+                                <%=userTasks[i].name%>
+                            </td>
+                            <td class="dasboardTaskCell">
+                            </td>
+                            <td class="dasboardTaskCell">
+                                <%=userTasks[i].due.toDateString()%>
+                            </td>
+                            <td class="dasboardTaskCell">
+                                <%=userTasks[i].status%>
+                            </td>
+                        </tr>
+                        <%}%>
+                            <%}%>
+
+
+            </table>
+
         </div>
 
     </div>

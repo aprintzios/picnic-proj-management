@@ -12,6 +12,7 @@ var taskSchema = new mongoose.Schema({
 
 var projectSchema = new mongoose.Schema({
   name: String,
+  createdBy: {type: Schema.Types.ObjectId, ref: 'User'},
   groupMembers: [{type: Schema.Types.ObjectId, ref: 'User'}],
   tasks: [taskSchema]
 }, {

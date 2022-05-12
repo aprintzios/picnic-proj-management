@@ -34,12 +34,30 @@ router.get('/dashboard', async function (req, res, next) {
   console.log("req user", req.user);
   if (req.user){
   //populate user projects
-  await req.user.populate('projects');
+  //await req.user.populate('projects');
+  //get all the projects that this user is a group member of
+  //get all projects, loop through all projects, loop group members compare
+
+  let userProjects = await Project.find({ groupMembers: { "$in" : [req.user._id]} });
   //get all tasks assigned to user
   //loop through all projects of user
   //await Project.find
+  let userTasks = [];
+
+  for (let i=0; i<userProjects.length; i++){
+    for (let j=0; j<userProjects[i].tasks.length; j++){
+      if (userProjects[i].tasks[j].assignedTo._id == req.user.id){
+        userTasks.push(userProjects[i].tasks[j]);
+      }
+    }
+  }
+
+  console.log("user projects", userProjects);
+  console.log("user tasks", userTasks);
   res.render('dashboard', { 
     user: req.user,
+    userProjects,
+    userTasks
   });
 } else{
   res.redirect('/');

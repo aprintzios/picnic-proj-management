@@ -16,8 +16,8 @@
         <label for="assignedTo">Assigned To:</label>
         <select name="assignedTo" id="assignedTo">
         <option value="">--Please choose an option--</option>
-        <%for (let i=0; i<users.length; i++){%>
-            <option value="<%=users[i]._id%>"><%=users[i].name%></option>
+        <%for (let i=0; i<project.groupMembers.length; i++){%>
+            <option value="<%=project.groupMembers[i]._id%>"><%=project.groupMembers[i].name%></option>
         <%}%>
         </select>
         <button>Submit</button>

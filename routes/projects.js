@@ -21,6 +21,8 @@ router.get('/new', function(req, res){
 
 router.get('/:id', projectCtrl.showProject);
 
+router.delete('/:id', projectCtrl.deleteProject);
+
 router.post('/:id/task', projectCtrl.addTask);
 
 router.get('/:id/task/:taskId', projectCtrl.showTask);

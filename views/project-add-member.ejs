@@ -19,8 +19,6 @@
                 <%}%>
         </ul>
 
-        <%=project.groupMembers[0]._id%>
-            <%=users[0]._id%>
         <form action="/projects/<%=project._id%>/addMember" method="POST">
             <label for="user-select">Users:</label>
             <select required name="newMember" id="user-select">
