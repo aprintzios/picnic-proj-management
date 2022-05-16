@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 var taskSchema = new mongoose.Schema({
     name: String,
+    project: {type: Schema.Types.ObjectId, ref: 'Project'},
     assignedTo: {type: Schema.Types.ObjectId, ref: 'User'},
     due: Date,
     status: String

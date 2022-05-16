@@ -46,29 +46,53 @@
         </div>
         <div id="mainContent">
 
-          
 
-            <div class="tableTitle"> GROUP MEMBERS </div>
-            <table id="dashboardTaskTable">
-                <th class="dasboardTaskHeader">MEMBER</th>
-                <th class="dasboardTaskHeader">ACTION</th>
-                <%if (project.groupMembers){%>
-                    <%for (let i=0; i< project.groupMembers.length; i++){%>
-                        <tr class="dasboardTaskRow">
-                            <td class="dasboardTaskCell">
-                                <%=project.groupMembers[i].name%> 
-                                   
-                            </td>
-                            <td class="dasboardTaskCell">
-                                <form method="POST"
-                                            action="/projects/<%=project._id%>/member/<%=project.groupMembers[i]._id%>/destroy?_method=DELETE">
-                                            <button>x</button></form>
-                            </td>
-                        </tr>
-                        <%}%>
+            <div id="groupWrapper">
+                <div class="groupTableTitle"> GROUP MEMBERS </div>
+                <table id="groupTable">
+                    <th class="groupHeader">MEMBER</th>
+                    <th class="groupHeader">ACTION</th>
+                    <%if (project.groupMembers){%>
+                        <%for (let i=0; i< project.groupMembers.length; i++){%>
+                            <tr class="groupRow">
+                                <td class="groupCell">
+                                    <%=project.groupMembers[i].name%>
+
+                                </td>
+                                <td class="groupCell">
+                                    <form method="POST"
+                                        action="/projects/<%=project._id%>/member/<%=project.groupMembers[i]._id%>/destroy?_method=DELETE">
+                                        <button>  <img class="updateImg" src="/images/delete.png" alt="deleteMember">
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
                             <%}%>
+                                <%}%>
+                                <tr class="groupRow">
+                                    <td class="groupCell">
+                                        <form action="/projects/<%=project._id%>/addMember" method="POST">
+                <select required name="newMember" id="user-select">
+
+                    <option value="">--Please choose an option--</option>
+                    <%for (let i=0; i<users.length; i++){%>
+                        <%if (project.groupMembers.filter(e => e._id == users[i]._id)) { %>              
+                        <option value="<%=users[i]._id%>"><%=users[i].name%></option>
+                    <%}%>
+                    <%}%>
+                </select>
+            </td>
+            <td class="groupCell">
+                <button> <img class="updateImg" src="/images/add.png" alt="addMember"> </button>
+                </form>
+            </td>
+
+
+            </tr>
+
             </table>
 
+            </div>
 
             <div class="tableTitle"> ALL TASKS </div>
             <table id="dashboardTaskTable">
@@ -93,10 +117,13 @@
                                 <%=project.tasks[i].status%>
                             </td>
                             <td class="dasboardTaskCell">
-                                <a href="/projects/<%=project._id%>/task/<%=project.tasks[i]._id%>">Edit</a>
+                                <a href="/projects/<%=project._id%>/task/<%=project.tasks[i]._id%>">
+                                    <img class="updateImg" src="/images/edit.png" alt="editTask">
+                                </a>
                                 <form method="POST"
                                     action="/projects/<%=project._id%>/task/<%=project.tasks[i]._id%>/destroy?_method=DELETE">
-                                    <button>Delete</button>
+                                    <button>  <img class="updateImg" src="/images/delete.png" alt="deleteTask">
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -135,7 +162,7 @@
                                         </td>
                                         <td class="dasboardTaskCell">
 
-                                            <button>ADD Task</button>
+                                            <button> <img class="updateImg" src="/images/add.png" alt="addTask"> </button>
                                         </td>
                                     </form>
                                 </tr>
@@ -143,13 +170,15 @@
 
             <br>
             <br>
-            <a href="/dashboard">Dashboard</a>
+            <form action="/dashboard">
+                <button>Dashboard</button>
+            </form>
             <form method="" POST action="/projects/<%=project._id%>">
                 <button>Delete Project</button>
             </form>
 
 
-<!-- 
+            <!-- 
             Group Members:
             <a href="/projects/<%=project._id%>/new-member">Add Group Members</a>
             <ul>

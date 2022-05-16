@@ -28,9 +28,14 @@ async function showProject(req, res) {
     //get Users
     let users = await User.find();
     let user = req.user;
+    if(user){
     let userProjects = await Project.find({ groupMembers: { "$in" : [user._id]} });
     console.log("req user", req.user);
     res.render('project-show', { project, users, user, userProjects});
+    } else {
+        res.redirect('/');
+    }
+
 }
 
 async function deleteProject(req, res){
@@ -43,6 +48,7 @@ async function addTask(req, res) {
     //create new task
     let newTask = {
         name: req.body.taskName,
+        project: projectId,
         assignedTo: req.body.assignedTo,
         due: req.body.dueDate,
         status: req.body.status
@@ -86,6 +92,8 @@ async function editTask(req, res) {
         if (project.tasks[i]._id == taskId) {
             //edit the task
             project.tasks[i].name = req.body.taskName;
+            project.tasks[i].assignedTo = req.body.assignedTo;
+            project.tasks[i].due = req.body.dueDate;
         }
     }
     //save project
@@ -131,7 +139,7 @@ async function addMember(req, res) {
     //push userId to project groupMember array
     project.groupMembers.push(userId);
     await project.save();
-    res.redirect('/projects/'+projectId+'/new-member');
+    res.redirect('/projects/'+projectId);
 }
 
 async function deleteMember(req, res){

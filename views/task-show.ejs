@@ -14,12 +14,13 @@
         <label for="taskName">Task Name</label>
         <input required name="taskName" type="text" placeholder="<%=task.name%>">
         <label for="assignedTo">Assigned To:</label>
-        <select name="assignedTo" id="assignedTo">
+        <select required name="assignedTo" id="assignedTo">
         <option value="">--Please choose an option--</option>
         <%for (let i=0; i<project.groupMembers.length; i++){%>
             <option value="<%=project.groupMembers[i]._id%>"><%=project.groupMembers[i].name%></option>
         <%}%>
         </select>
+        <input required type="date" id="dueDate" name="dueDate">
         <button>Submit</button>
     </form>
     <br>

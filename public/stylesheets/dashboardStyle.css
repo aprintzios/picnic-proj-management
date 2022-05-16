@@ -47,3 +47,15 @@ a {
     flex: 5;
 
 }
+#groupWrapper{
+    display: flex;
+}
+
+.updateImg {
+    height: 30px;
+    width: 30px;
+}
+button{
+    border: none;
+    background-color: white;
+}
