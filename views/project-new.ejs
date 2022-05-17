@@ -1,20 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <title>NEW PROJECT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        #sideNavBack {
+            position: absolute;
+            margin-top: 40vh;
+        }
+        #pageTitle {
+            font-size: 4rem;
+            color: #F506A9;
+            font-family: 'Bebas Neue', cursive;
+        }
+        #mainContent {
+            padding: 4rem 10rem;
+        }
+    </style>
 </head>
-<body>
-    <form action="/projects" method="POST">
-        <label for="project-name">PROJECT NAME:</label>
-        <input required type="text" name="projectName">
-        <button>ADD PROJECT</button>
-    </form>
 
-<br>
-<br>
-<a href="/dashboard">Dashboard</a>
+<body>
+
+    <nav>
+        <div class="nav-wrapper teal accent-2">
+            <span id="pageTitle">
+                NEW PROJECT
+            </span>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/dashboard">DASH</a></li>
+                <li><a href="/logout">LOGOUT</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <ul id="slide-out" class="sidenav">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                </div>
+                <a href="#user"><img class="circle" src="/images/avatars/pp1.png"></a>
+                <a href="#name"><span class=" name">
+                        <%= user.name%>
+                    </span></a>
+                <a href="#email"><span class=" email">jdandturk@gmail.com</span></a>
+            </div>
+        </li>
+
+        <%if(user.projects){%>
+            <%for (let i=0; i<userProjects.length; i++){%>
+                <li> <a href="/projects/<%=userProjects[i]._id%>">
+                        <%=userProjects[i].name%>
+                    </a> </li>
+                <%}%>
+                    <%}%>
+
+                        <li>
+                            <div class="divider"></div>
+                        </li>
+                        <li><a href="/projects/new"> + NEW PROJECT</a>
+                        </li>
+    </ul>
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">
+            <div id="sideNavBack">
+                <img src="/images/back.png" height="30px">
+            </div>
+        </i></a>
+
+    <div id="mainContent">
+
+
+        <form action="/projects" method="POST">
+            <label for="project-name">PROJECT NAME:</label>
+            <input required type="text" name="projectName">
+            <button class="waves-effect waves-light btn-small">ADD PROJECT</button>
+        </form>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.collapsible');
+            var instances = M.Collapsible.init(elems);
+        });
+
+    </script>
+
 </body>
+
 </html>

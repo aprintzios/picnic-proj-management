@@ -75,10 +75,8 @@
                 <select required name="newMember" id="user-select">
 
                     <option value="">--Please choose an option--</option>
-                    <%for (let i=0; i<users.length; i++){%>
-                        <%if (project.groupMembers.filter(e => e._id == users[i]._id)) { %>              
-                        <option value="<%=users[i]._id%>"><%=users[i].name%></option>
-                    <%}%>
+                    <%for (let i=0; i<potGM.length; i++){%>
+                        <option value="<%=potGM[i]._id%>"><%=potGM[i].name%></option>
                     <%}%>
                 </select>
             </td>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MY PROJECT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <style>
+        #sideNavBack {
+            position: absolute;
+            margin-top: 40vh;
+        }
+
+        #pageTitle {
+            font-size: 4rem;
+            color: #F506A9;
+            font-family: 'Bebas Neue', cursive;
+
+        }
+
+        #mainContent {
+            padding: 4rem 10rem;
+        }
+
+        /* 
+        tr {
+            border-bottom: 1px solid #F506A9;
+        } */
+
+        .updateImg {
+            height: 20px;
+        }
+
+        .icon {
+            height: 22px;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <nav>
+        <div class="nav-wrapper teal accent-2">
+            <span id="pageTitle">
+                <%=project.name%>
+            </span>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="/dashboard">DASH</a></li>
+                <li><a href="/logout">LOGOUT</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+
+    <ul id="slide-out" class="sidenav">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                </div>
+                <a href="#user"><img class="circle" src="/images/avatars/pp1.png"></a>
+                <a href="#name"><span class=" name">
+                        <%= user.name%>
+                    </span></a>
+                <a href="#email"><span class=" email">jdandturk@gmail.com</span></a>
+            </div>
+        </li>
+
+        <%if(user.projects){%>
+            <%for (let i=0; i<userProjects.length; i++){%>
+                <li> <a href="/projects/<%=userProjects[i]._id%>">
+                        <%=userProjects[i].name%>
+                    </a> </li>
+                <%}%>
+                    <%}%>
+
+                        <li>
+                            <div class="divider"></div>
+                        </li>
+                        <li><a href="/projects/new"> + NEW PROJECT</a>
+                        </li>
+    </ul>
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">
+            <div id="sideNavBack">
+                <img src="/images/back.png" height="30px">
+            </div>
+        </i></a>
+
+
+    <div id="mainContent">
+
+
+
+        <ul class="collapsible">
+            <li>
+                <div id="groupHeader" class="collapsible-header"><img id="groupIcon" class="icon"
+                        src="/images/expand.png" alt=""> &nbsp; GROUP MEMBERS</div>
+                <div class="collapsible-body">
+                    <table id="groupTable">
+                        <th class="groupHeader">MEMBER</th>
+                        <th class="groupHeader">ACTION</th>
+                        <%if (project.groupMembers){%>
+                            <%for (let i=0; i< project.groupMembers.length; i++){%>
+                                <tr class="groupRow">
+                                    <td class="groupCell">
+                                        <%=project.groupMembers[i].name%>
+
+                                    </td>
+                                    <td class="groupCell">
+                                        <form method="POST"
+                                            action="/projects/<%=project._id%>/member/<%=project.groupMembers[i]._id%>/destroy?_method=DELETE">
+                                            <button> <img class="updateImg" src="/images/delete.png" alt="deleteMember">
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <%}%>
+                                    <%}%>
+                                        <tr class="groupRow">
+                                            <td class="groupCell">
+                                                <form action="/projects/<%=project._id%>/addMember" method="POST">
+                                                    <select required name="newMember" id="user-select">
+
+                                                        <option value=""></option>
+                                                        <%for (let i=0; i<potGM.length; i++){%>
+                                                            <option value="<%=potGM[i]._id%>">
+                                                                <%=potGM[i].name%>
+                                                            </option>
+                                                            <%}%>
+                                                    </select>
+                                            </td>
+                                            <td class="groupCell">
+                                                <button> <img class="updateImg" src="/images/add.png" alt="addMember">
+                                                </button>
+                                                </form>
+                                            </td>
+
+
+                                        </tr>
+
+                    </table>
+
+                </div>
+            </li>
+        </ul>
+        <ul class="collapsible">
+            <li class="active">
+                <div id="taskHeader" class="collapsible-header"><img id="taskIcon" class="icon"
+                        src="/images/collapse.png" alt=""> &nbsp; TASKS</div>
+                <div class="collapsible-body">
+                    <table id="dashboardTaskTable">
+                        <th class="dasboardTaskHeader">TASK</th>
+                        <th class="dasboardTaskHeader">ASSIGNED TO</th>
+                        <th class="dasboardTaskHeader">DUE</th>
+                        <th class="dasboardTaskHeader">STATUS</th>
+                        <th class="dasboardTaskHeader">ACTIONS</th>
+                        <%if (project.tasks){%>
+                            <% for (let i=0; i<project.tasks.length; i++){%>
+                                <tr class="dasboardTaskRow">
+                                    <td class="dasboardTaskCell">
+                                        <%=project.tasks[i].name%>
+                                    </td>
+                                    <td class="dasboardTaskCell">
+                                        <%=project.tasks[i].assignedTo.name%>
+                                    </td>
+                                    <td class="dasboardTaskCell">
+                                        <%=project.tasks[i].due.toDateString()%>
+                                    </td>
+                                    <td class="dasboardTaskCell">
+                                        <%=project.tasks[i].status%>
+                                    </td>
+                                    <td class="dasboardTaskCell">
+                                        <a href="/projects/<%=project._id%>/task/<%=project.tasks[i]._id%>">
+                                            <img class="updateImg" src="/images/edit.png" alt="editTask">
+                                        </a>
+                                        <form method="POST"
+                                            action="/projects/<%=project._id%>/task/<%=project.tasks[i]._id%>/destroy?_method=DELETE">
+                                            <button> <img class="updateImg" src="/images/delete.png" alt="deleteTask">
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                <%}%>
+                                    <%}%>
+
+
+                                        <tr class="dasboardTaskRow">
+                                            <form action="/projects/<%=project._id%>/task" method="POST">
+                                                <td class="dasboardTaskCell">
+
+                                                    <input required type="text" name="taskName">
+                                                </td>
+
+                                                <td class="dasboardTaskCell">
+                                                    <select required name="assignedTo" id="assignedTo">
+                                                        <option disabled value=""></option>
+                                                        <%for (let i=0; i<project.groupMembers.length; i++){%>
+                                                            <option value="<%=project.groupMembers[i]._id%>">
+                                                                <%=project.groupMembers[i].name%>
+                                                            </option>
+                                                            <%}%>
+                                                    </select>
+                                                </td>
+                                                <td class="dasboardTaskCell">
+                                                    <input required type="date" id="dueDate" name="dueDate">
+                                                </td>
+
+                                                <td class="dasboardTaskCell">
+                                                    <select required name="status" id="status">
+                                                        <option disabled value="">--Please choose an option--</option>
+                                                        <option value="Icebox">Icebox</option>
+                                                        <option value="Current/MVP">Current/MVP</option>
+                                                        <option value="Completed">Completed</option>
+                                                    </select>
+                                                </td>
+                                                <td class="dasboardTaskCell">
+
+                                                    <button> <img class="updateImg" src="/images/add.png" alt="addTask">
+                                                    </button>
+                                                </td>
+                                            </form>
+                                        </tr>
+                    </table>
+
+                </div>
+            </li>
+        </ul>
+
+
+
+        <form method="" POST action="/projects/<%=project._id%>">
+            <button>Delete Project</button>
+        </form>
+
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script>
+            let groupOpen = false;
+            let taskOpen = true;
+
+            document.addEventListener('DOMContentLoaded', function () {
+                var elems = document.querySelectorAll('.sidenav');
+                var instances = M.Sidenav.init(elems);
+            });
+
+            document.addEventListener('DOMContentLoaded', function () {
+                var elems = document.querySelectorAll('.collapsible');
+                var instances = M.Collapsible.init(elems);
+            });
+            document.addEventListener('DOMContentLoaded', function () {
+                var elems = document.querySelectorAll('select');
+                var instances = M.FormSelect.init(elems);
+            });
+
+            let groupHeader = document.getElementById("groupHeader");
+            let groupIcon = document.getElementById("groupIcon");
+            groupHeader.addEventListener("click", headerClick);
+            groupIcon.addEventListener("click", iconClick);
+
+            let taskHeader = document.getElementById("taskHeader");
+            let taskIcon = document.getElementById("taskIcon");
+            taskHeader.addEventListener("click", headerClick);
+            taskIcon.addEventListener("click", iconClick);
+
+
+            function headerClick(e) {
+                if (e.target.id == "groupHeader") {
+                    if (groupOpen) {
+                        groupOpen = false;
+                        //add expand icon
+                        groupIcon.src = "/images/expand.png"
+                    } else {
+                        groupOpen = true;
+                        groupIcon.src = "/images/collapse.png"
+
+                    }
+                }
+                if (e.target.id == "taskHeader") {
+                    if (taskOpen) {
+                        taskOpen = false;
+                        //add expand icon
+                        taskIcon.src = "/images/expand.png"
+                    } else {
+                        taskOpen = true;
+                        taskIcon.src = "/images/collapse.png"
+
+                    }
+                }
+            }
+
+            function iconClick(e) {
+                if (e.target.id == "groupIcon") {
+                    if (groupOpen) {
+                        groupOpen = false;
+                        //add expand icon
+                        groupIcon.src = "/images/expand.png"
+                    } else {
+                        groupOpen = true;
+                        groupIcon.src = "/images/collapse.png"
+
+                    }
+                }
+                if (e.target.id == "taskIcon") {
+                    if (taskOpen) {
+                        taskOpen = false;
+                        //add expand icon
+                        taskIcon.src = "/images/expand.png"
+                    } else {
+                        taskOpen = true;
+                        taskIcon.src = "/images/collapse.png"
+                    }
+                }
+            }
+
+        </script>
+
+</body>
+
+</html>

@@ -2,22 +2,18 @@ var express = require('express');
 var router = express.Router();
 
 const req = require('express/lib/request');
-const passport = require('passport');
+//const passport = require('passport');
 
 var projectCtrl = require('../controllers/projectCtrl');
 
 /* GET project listing. */
 router.get('/', function(req, res, next) {
-  res.render('dashboard', { 
-    user: req.user,
-  });
+  res.redirect('/dashboard');
 });
 
 router.post('/', projectCtrl.newProject);
 
-router.get('/new', function(req, res){
-  res.render('project-new');
-});
+router.get('/new', projectCtrl.createProject);
 
 router.get('/:id', projectCtrl.showProject);
 

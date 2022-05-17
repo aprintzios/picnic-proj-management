@@ -11,27 +11,44 @@ async function newProject(req, res) {
         tasks: []
     });
     await newProject.save();
-    //add current user to 
-    //req.user.projects.push(newProject._id);
-    //await req.user.save();
-    res.redirect('/dashboard');
+    res.redirect('/projects/'+newProject._id);
+}
+
+async function createProject(req, res){
+    console.log("req user create proj", req.user);
+    let user = req.user;
+    if(user){
+    let userProjects = await Project.find({ groupMembers: { "$in" : [user._id]} });
+    res.render('project-new', {user, userProjects});
+    } else {
+        res.redirect('/');
+    }
+
+    
 }
 
 async function showProject(req, res) {
     let projectId = req.params.id;
     //get project
     let project = await Project.findById(projectId);
-    //populate members
-    await project.populate('groupMembers');
-    await project.populate('tasks.assignedTo');
 
     //get Users
     let users = await User.find();
+    //get potential group members --> all users not already a group member
+    let potGM = users.filter(user=> !project.groupMembers.includes(user._id));
+
+    console.log("potGm", potGM);
+
+    //populate members
+    await project.populate('groupMembers');
+    await project.populate('tasks.assignedTo');
+    await project.populate('tasks.project');
+
+    
     let user = req.user;
     if(user){
     let userProjects = await Project.find({ groupMembers: { "$in" : [user._id]} });
-    console.log("req user", req.user);
-    res.render('project-show', { project, users, user, userProjects});
+    res.render('project-show2', { project, users, user, userProjects, potGM});
     } else {
         res.redirect('/');
     }
@@ -45,6 +62,8 @@ async function deleteProject(req, res){
 async function addTask(req, res) {
     //get project id
     let projectId = req.params.id;
+
+    console.log("add task req body", req.body);
     //create new task
     let newTask = {
         name: req.body.taskName,
@@ -78,6 +97,8 @@ async function showTask(req, res) {
         }
     }
     let users = await User.find();
+
+    console.log("t as to", task.assignedTo);
     res.render('task-show', { project, task, users});
 }
 
@@ -163,6 +184,7 @@ async function deleteMember(req, res){
 
 module.exports = {
     newProject,
+    createProject,
     showProject,
     deleteProject,
     addTask,
