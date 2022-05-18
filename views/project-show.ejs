@@ -1,0 +1,303 @@
+<%- include('./partials/header.ejs'); %>
+
+    <%- include('./partials/nav.ejs'); %>
+        <%- include('./partials/sidenav.ejs'); %>
+
+
+            <div id="mainContent">
+
+                <div id="filterSelect">
+
+                    <form action="#">
+                        <div>
+                            Filter by Person
+
+                         
+                            <%if(project.groupMembers){%>
+                                <%for (let i=0; i<project.groupMembers.length; i++){%>
+
+                                    <p>
+                                        <label>
+                                            <input class="projectFilter" name="<%=project.groupMembers[i]._id%>"
+                                                type="checkbox" />
+                                            <span>
+                                                <%=project.groupMembers[i].name%>
+                                            </span>
+                                        </label>
+                                    </p>
+                                    <%}%>
+                                        <%}%>
+
+                        </div>
+                        <div>
+                            Filter by Status
+                            <p>
+                                <label>
+                                    <input name="icebox" type="checkbox" />
+                                    <span>Icebox</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input name="current" type="checkbox" />
+                                    <span>Current/MVP</span>
+                                </label>
+                            </p>
+                            <p>
+                                <label>
+                                    <input name="completed" type="checkbox" />
+                                    <span>Completed</span>
+                                </label>
+                            </p>
+                        </div>
+                        <div>
+                            <label for="dueAfter">Due after</label>
+                            <input name="dueAfter" type="text" class="datepicker">
+                        </div>
+
+                        <div>
+                            <label for="dueBefore">Due before</label>
+                            <input name="dueBefore" type="text" class="datepicker">
+                        </div>
+                    </form>
+
+                    <div>
+
+
+                        GROUP MEMBERS
+                        <br>
+                        <%if (project.groupMembers){%>
+                            <%for (let i=0; i< project.groupMembers.length; i++){%>
+                                <!-- <%=project.groupMembers[i].name%> -->
+                                <form method="POST"
+                                    action="/projects/<%=project._id%>/member/<%=project.groupMembers[i]._id%>/destroy?_method=DELETE">
+                                    <label for="">
+                                        <%=project.groupMembers[i].name%>
+                                    </label>
+                                    <button> <img class="updateImg" src="/images/delete.png" alt="deleteMember">
+                                    </button>
+                                </form>
+                                <%}%>
+                                    <%}%>
+                                        <form action="/projects/<%=project._id%>/addMember" method="POST">
+                                            <select required name="newMember" id="user-select">
+
+                                                <option disabled value="">Add member</option>
+                                                <%for (let i=0; i<potGM.length; i++){%>
+                                                    <option class="gmOption" value="<%=potGM[i]._id%>">
+                                                        <%=potGM[i].name%>
+                                                    </option>
+                                                    <%}%>
+                                            </select>
+
+                                            <button> <img class="updateImg" src="/images/add.png" alt="addMember">
+                                            </button>
+                                        </form>
+
+
+                                        <form method="" POST action="/projects/<%=project._id%>">
+                                            <button>Delete Project</button>
+                                        </form>
+                    </div>
+                </div>
+                <div id="taskContainer">
+                    <div>
+
+                        <table id="dashboardTaskTable">
+                            <th class="dasboardTaskHeader">TASK</th>
+                            <th class="dasboardTaskHeader">ASSIGNED TO</th>
+                            <th class="dasboardTaskHeader">DUE</th>
+                            <th class="dasboardTaskHeader">STATUS</th>
+                            <th class="dasboardTaskHeader">ACTIONS</th>
+                            <%if (tasks){%>
+                                <% for (let i=0; i<tasks.length; i++){%>
+                                    <tr class="dasboardTaskRow">
+                                        <td class="dasboardTaskCell">
+                                            <%=tasks[i].name%>
+                                        </td>
+                                        <td class="dasboardTaskCell">
+                                            <%=tasks[i].assignedTo.name%>
+                                        </td>
+                                        <td class="dasboardTaskCell">
+                                            <%=tasks[i].due.toDateString()%>
+                                        </td>
+                                        <td class="dasboardTaskCell">
+                                            <%=tasks[i].status%>
+                                        </td>
+                                        <td class="dasboardTaskCell">
+                                            <a href="/projects/<%=project._id%>/task/<%=tasks[i]._id%>">
+                                                <img class="updateImg" src="/images/edit.png" alt="editTask">
+                                            </a>
+                                            <form method="POST"
+                                                action="/projects/<%=project._id%>/task/<%=tasks[i]._id%>/destroy?_method=DELETE">
+                                                <button> <img class="updateImg" src="/images/delete.png"
+                                                        alt="deleteTask">
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <%}%>
+                                        <%}%>
+
+
+                        </table>
+
+                    </div>
+
+                    <ul class="collapsible">
+                        <li>
+                            <div id="groupHeader" class="collapsible-header"><img id="groupIcon" class="icon"
+                                    src="/images/expand.png" alt=""> &nbsp; ADD A TASK</div>
+                            <div class="collapsible-body">
+
+                                <div id="newTaskForm">
+
+                                    <form action="/projects/<%=project._id%>/task" method="POST">
+
+
+                                        <div>
+                                            <input required type="text" name="taskName">
+                                            <label for="taskName">Task</label>
+                                        </div>
+                                        <div>
+                                            <select name="assignedTo" id="assignedTo">
+                                                <option disabled value="">choose one:</option>
+                                                <%for (let i=0; i<project.groupMembers.length; i++){%>
+                                                    <option value="<%=project.groupMembers[i]._id%>">
+                                                        <%=project.groupMembers[i].name%>
+                                                    </option>
+                                                    <%}%>
+                                            </select>
+                                            <label>Assigned To</label>
+                                        </div>
+
+                                        <div>
+                                            <input required type="date" id="dueDate" name="dueDate">
+                                            <label for="dueDate">Due</label>
+                                        </div>
+
+                                        <div>
+                                            <select required name="status" id="status">
+                                                <option disabled value="">--Please choose an option--</option>
+                                                <option value="Icebox">Icebox</option>
+                                                <option value="Current/MVP">Current/MVP</option>
+                                                <option value="Completed">Completed</option>
+                                            </select>
+                                            <label>Status</label>
+
+                                        </div>
+
+                                        <button> <img class="updateImg" src="/images/add.png" alt="addTask">
+                                        </button>
+
+
+                                    </form>
+
+                                </div>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </div>
+
+
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            <script>
+                let groupOpen = false;
+                let taskOpen = true;
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('.sidenav');
+                    var instances = M.Sidenav.init(elems);
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('.collapsible');
+                    var instances = M.Collapsible.init(elems);
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('select');
+                    var instances = M.FormSelect.init(elems);
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('.dropdown-trigger');
+                    var instances = M.Dropdown.init(elems);
+                });
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('.datepicker');
+                    var instances = M.Datepicker.init(elems);
+                });
+
+                let groupHeader = document.getElementById("groupHeader");
+                let groupIcon = document.getElementById("groupIcon");
+                groupHeader.addEventListener("click", headerClick);
+                groupIcon.addEventListener("click", iconClick);
+
+                let taskHeader = document.getElementById("taskHeader");
+                let taskIcon = document.getElementById("taskIcon");
+                taskHeader.addEventListener("click", headerClick);
+                taskIcon.addEventListener("click", iconClick);
+
+                $(document).ready(function () {
+                    $('select').material_select();
+                });
+
+                function headerClick(e) {
+                    if (e.target.id == "groupHeader") {
+                        if (groupOpen) {
+                            groupOpen = false;
+                            //add expand icon
+                            groupIcon.src = "/images/expand.png"
+                        } else {
+                            groupOpen = true;
+                            groupIcon.src = "/images/collapse.png"
+
+                        }
+                    }
+                    if (e.target.id == "taskHeader") {
+                        if (taskOpen) {
+                            taskOpen = false;
+                            //add expand icon
+                            taskIcon.src = "/images/expand.png"
+                        } else {
+                            taskOpen = true;
+                            taskIcon.src = "/images/collapse.png"
+
+                        }
+                    }
+                }
+
+                function iconClick(e) {
+                    if (e.target.id == "groupIcon") {
+                        if (groupOpen) {
+                            groupOpen = false;
+                            //add expand icon
+                            groupIcon.src = "/images/expand.png"
+                        } else {
+                            groupOpen = true;
+                            groupIcon.src = "/images/collapse.png"
+
+                        }
+                    }
+                    if (e.target.id == "taskIcon") {
+                        if (taskOpen) {
+                            taskOpen = false;
+                            //add expand icon
+                            taskIcon.src = "/images/expand.png"
+                        } else {
+                            taskOpen = true;
+                            taskIcon.src = "/images/collapse.png"
+                        }
+                    }
+                }
+
+            </script>
+
+            </body>
+
+            </html>

@@ -11,14 +11,13 @@
             </div>
         </li>
 
-        <%if(user.projects){%>
+        <%if(userProjects){%>
             <%for (let i=0; i<userProjects.length; i++){%>
                 <li> <a href="/projects/<%=userProjects[i]._id%>">
                         <%=userProjects[i].name%>
                     </a> </li>
                 <%}%>
                     <%}%>
-
                         <li>
                             <div class="divider"></div>
                         </li>

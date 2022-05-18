@@ -43,6 +43,7 @@ function sRedirect(){
 }
 
 router.get('/testAPI', function (req, res, next) {
+  console.log('test api req ', req);
   let testData = ['one', 'two', 'three'];
   res.json(testData);
 });

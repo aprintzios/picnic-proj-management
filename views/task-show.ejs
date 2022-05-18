@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,34 +6,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MY PROJECT</title>
 </head>
-<body>
-    Project Name: <%=project.name%><br>
+<body> -->
 
-    
+    <%- include('./partials/header.ejs'); %>
+
+    <%- include('./partials/nav.ejs'); %>
+        <%- include('./partials/sidenav.ejs'); %>
+
+        <div id="mainContent">
+            <div>
+                
+                <%=task.due%>
+
     <form action="/projects/<%=project._id%>/task/<%=task._id%>?_method=PUT" method="POST">
         <label for="taskName">Task Name</label>
-        <input required name="taskName" type="text" placeholder="<%=task.name%>">
+        <input required name="taskName" type="text" value="<%=task.name%>">
         <label for="assignedTo">Assigned To:</label>
         <select required name="assignedTo" id="assignedTo">
         <option value="">--Please choose an option--</option>
         <%for (let i=0; i<project.groupMembers.length; i++){%>
+            <%=task.assignedTo.id%>
+
+            <%=project.groupMembers[i].id%>
+
+            <%if (project.groupMembers[i].id == task.assignedTo.id){%>
+             <option selected="selected" value="<%=project.groupMembers[i]._id%>"><%=project.groupMembers[i].name%></option>
+            <%} else {%>
             <option value="<%=project.groupMembers[i]._id%>"><%=project.groupMembers[i].name%></option>
+            <%}%>
         <%}%>
         </select>
-        <input required type="date" id="dueDate" name="dueDate">
+        <input required value="<%=task.due%>" type="date" id="dueDate" name="dueDate">
+        <select required name="status" id="status">
+            <option disabled value="<%=task.due%>">--Please choose an option--</option>
+            <option value="Icebox">Icebox</option>
+            <option value="Current/MVP">Current/MVP</option>
+            <option value="Completed">Completed</option>
+        </select>
+        <label>Status</label>
         <button>Submit</button>
     </form>
-    <br>
 
     <form method="POST" action="/projects/<%=project._id%>/task/<%=task._id%>/destroy?_method=DELETE" >
         <button>Delete Task</button>
     </form>
-    <br>
-    <a href="/projects/<%=project._id%>">Back to Project</a>
+</div>
+</div>
+ 
 
-    <br>
-<br>
-<a href="/dashboard">Dashboard</a>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('.sidenav');
+                    var instances = M.Sidenav.init(elems);
+                });
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('select');
+                    var instances = M.FormSelect.init(elems);
+                });
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('.datepicker');
+                    var instances = M.Datepicker.init(elems);
+                });
+</script>
 </body>
 </html>

@@ -14,7 +14,8 @@ async function showDashboard(req, res, next) {
         res.render('dashboard', {
             user: req.user,
             userProjects,
-            userTasks
+            userTasks,
+            title: "My Dashboard"
         });
     } else {
         res.redirect('/');

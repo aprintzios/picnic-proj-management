@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -72,32 +72,46 @@
             <div id="sideNavBack">
                 <img src="/images/back.png" height="30px">
             </div>
-        </i></a>
+        </i></a> -->
 
-    <div id="mainContent">
+<%- include('./partials/header.ejs'); %>
+
+    <%- include('./partials/nav.ejs'); %>
+        <%- include('./partials/sidenav.ejs'); %>
+
+            <div id="mainContent">
 
 
-        <form action="/projects" method="POST">
-            <label for="project-name">PROJECT NAME:</label>
-            <input required type="text" name="projectName">
-            <button class="waves-effect waves-light btn-small">ADD PROJECT</button>
-        </form>
+                <form action="/projects" method="POST">
+                    <label for="project-name">PROJECT NAME:</label>
+                    <input required type="text" name="projectName">
+                    <button class="waves-effect waves-light btn-small">ADD PROJECT</button>
+                </form>
 
-    </div>
+            </div>
 
-    <script>
+            <script>
         document.addEventListener('DOMContentLoaded', function () {
-            var elems = document.querySelectorAll('.sidenav');
-            var instances = M.Sidenav.init(elems);
-        });
+                    var elems = document.querySelectorAll('.sidenav');
+                    var instances = M.Sidenav.init(elems);
+                });
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('select');
+                    var instances = M.FormSelect.init(elems);
+                });
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('.datepicker');
+                    var instances = M.Datepicker.init(elems);
+                });
 
-        document.addEventListener('DOMContentLoaded', function () {
-            var elems = document.querySelectorAll('.collapsible');
-            var instances = M.Collapsible.init(elems);
-        });
 
-    </script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('.collapsible');
+                    var instances = M.Collapsible.init(elems);
+                });
 
-</body>
+            </script>
 
-</html>
+            </body>
+
+            </html>
