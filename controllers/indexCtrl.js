@@ -11,14 +11,6 @@ async function showDashboard(req, res, next) {
 
         console.log("user Tasks", userTasks);
 
-        // for (let i = 0; i < userProjects.length; i++) {
-        //     for (let j = 0; j < userProjects[i].tasks.length; j++) {
-        //         if (userProjects[i].tasks[j].assignedTo._id == req.user.id) {
-        //             userTasks.push(userProjects[i].tasks[j]);
-        //         }
-        //     }
-        // }
-
         res.render('dashboard', {
             user: req.user,
             userProjects,

@@ -26,6 +26,7 @@
 #filterSelect {
     flex: 2;
     display: flex;
+    flex-direction: column;
     gap: 10px;
     justify-content: center;
     align-items: flex-start;
@@ -36,4 +37,35 @@
 }
 .navLink{
     color: black;
+}
+
+.gmOption{
+    text-align: left;
+    padding-left: -40px;
+}
+
+.updateImg {
+    height: 20px;
+}
+
+.icon {
+    height: 22px;
+}
+
+.navLink {
+    color: black;
+}
+
+.collapsableBody {
+    display: flex;
+}
+
+#newTaskWrapper {
+    display: flex;
+}
+#newTaskTitle{
+    flex: 2;
+}
+#newTaskForm {
+    flex: 4;
 }

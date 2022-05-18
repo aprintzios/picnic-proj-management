@@ -2,8 +2,8 @@ var express = require('express');
 const req = require('express/lib/request');
 var router = express.Router();
 const passport = require('passport');
-const Project = require('../models/project');
-const Task = require('../models/task');
+// const Project = require('../models/project');
+// const Task = require('../models/task');
 
 var indexCtrl = require('../controllers/indexCtrl');
 

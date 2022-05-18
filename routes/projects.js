@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const req = require('express/lib/request');
+// const req = require('express/lib/request');
 //const passport = require('passport');
 
 var projectCtrl = require('../controllers/projectCtrl');

@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
-const req = require('express/lib/request');
-const passport = require('passport');
+// const req = require('express/lib/request');
+// const passport = require('passport');
 
 var profileCtrl = require('../controllers/profileCtrl');
 
