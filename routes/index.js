@@ -3,7 +3,9 @@ const req = require('express/lib/request');
 var router = express.Router();
 const passport = require('passport');
 const Project = require('../models/project');
+const Task = require('../models/task');
 
+var indexCtrl = require('../controllers/indexCtrl');
 
 
 /* GET landing page. */
@@ -31,29 +33,7 @@ router.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-router.get('/dashboard', async function (req, res, next) {
-  if (req.user){
-  let userProjects = await Project.find({ groupMembers: { "$in" : [req.user._id]} });
-
-  let userTasks = [];
-
-  for (let i=0; i<userProjects.length; i++){
-    for (let j=0; j<userProjects[i].tasks.length; j++){
-      if (userProjects[i].tasks[j].assignedTo._id == req.user.id){
-        userTasks.push(userProjects[i].tasks[j]);
-      }
-    }
-  }
-
-  res.render('dashboard2', { 
-    user: req.user,
-    userProjects,
-    userTasks
-  });
-} else{
-  res.redirect('/');
-}
-});
+router.get('/dashboard', indexCtrl.showDashboard);
 
 
 function sRedirect(){

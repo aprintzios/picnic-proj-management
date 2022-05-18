@@ -13,6 +13,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
 
     <style>
         #sideNavBack {
@@ -31,17 +34,30 @@
             padding: 4rem 10rem;
         }
 
-        /* 
-        tr {
-            border-bottom: 1px solid #F506A9;
-        } */
-
         .updateImg {
             height: 20px;
         }
 
         .icon {
             height: 22px;
+        }
+
+        .navLink {
+            color: black;
+        }
+
+        .collapsableBody {
+            display: flex;
+        }
+
+        #newTaskWrapper {
+            display: flex;
+        }
+        #newTaskTitle{
+            flex: 2;
+        }
+        #newTaskForm {
+            flex: 4;
         }
     </style>
 </head>
@@ -55,8 +71,8 @@
                 <%=project.name%>
             </span>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-                <li><a href="/dashboard">DASH</a></li>
-                <li><a href="/logout">LOGOUT</a></li>
+                <li><a class="navLink" href="/dashboard">DASH</a></li>
+                <li><a class="navLink" href="/logout">LOGOUT</a></li>
             </ul>
         </div>
     </nav>
@@ -72,7 +88,6 @@
                 <a href="#name"><span class=" name">
                         <%= user.name%>
                     </span></a>
-                <a href="#email"><span class=" email">jdandturk@gmail.com</span></a>
             </div>
         </li>
 
@@ -98,8 +113,9 @@
 
 
     <div id="mainContent">
-
-
+        <form method="" POST action="/projects/<%=project._id%>">
+            <button>Delete Project</button>
+        </form>
 
         <ul class="collapsible">
             <li>
@@ -114,7 +130,6 @@
                                 <tr class="groupRow">
                                     <td class="groupCell">
                                         <%=project.groupMembers[i].name%>
-
                                     </td>
                                     <td class="groupCell">
                                         <form method="POST"
@@ -158,33 +173,35 @@
                 <div id="taskHeader" class="collapsible-header"><img id="taskIcon" class="icon"
                         src="/images/collapse.png" alt=""> &nbsp; TASKS</div>
                 <div class="collapsible-body">
+
+
                     <table id="dashboardTaskTable">
                         <th class="dasboardTaskHeader">TASK</th>
                         <th class="dasboardTaskHeader">ASSIGNED TO</th>
                         <th class="dasboardTaskHeader">DUE</th>
                         <th class="dasboardTaskHeader">STATUS</th>
                         <th class="dasboardTaskHeader">ACTIONS</th>
-                        <%if (project.tasks){%>
-                            <% for (let i=0; i<project.tasks.length; i++){%>
+                        <%if (tasks){%>
+                            <% for (let i=0; i<tasks.length; i++){%>
                                 <tr class="dasboardTaskRow">
                                     <td class="dasboardTaskCell">
-                                        <%=project.tasks[i].name%>
+                                        <%=tasks[i].name%>
                                     </td>
                                     <td class="dasboardTaskCell">
-                                        <%=project.tasks[i].assignedTo.name%>
+                                        <%=tasks[i].assignedTo.name%>
                                     </td>
                                     <td class="dasboardTaskCell">
-                                        <%=project.tasks[i].due.toDateString()%>
+                                        <%=tasks[i].due.toDateString()%>
                                     </td>
                                     <td class="dasboardTaskCell">
-                                        <%=project.tasks[i].status%>
+                                        <%=tasks[i].status%>
                                     </td>
                                     <td class="dasboardTaskCell">
-                                        <a href="/projects/<%=project._id%>/task/<%=project.tasks[i]._id%>">
+                                        <a href="/projects/<%=project._id%>/task/<%=tasks[i]._id%>">
                                             <img class="updateImg" src="/images/edit.png" alt="editTask">
                                         </a>
                                         <form method="POST"
-                                            action="/projects/<%=project._id%>/task/<%=project.tasks[i]._id%>/destroy?_method=DELETE">
+                                            action="/projects/<%=project._id%>/task/<%=tasks[i]._id%>/destroy?_method=DELETE">
                                             <button> <img class="updateImg" src="/images/delete.png" alt="deleteTask">
                                             </button>
                                         </form>
@@ -194,136 +211,156 @@
                                     <%}%>
 
 
-                                        <tr class="dasboardTaskRow">
-                                            <form action="/projects/<%=project._id%>/task" method="POST">
-                                                <td class="dasboardTaskCell">
-
-                                                    <input required type="text" name="taskName">
-                                                </td>
-
-                                                <td class="dasboardTaskCell">
-                                                    <select required name="assignedTo" id="assignedTo">
-                                                        <option disabled value=""></option>
-                                                        <%for (let i=0; i<project.groupMembers.length; i++){%>
-                                                            <option value="<%=project.groupMembers[i]._id%>">
-                                                                <%=project.groupMembers[i].name%>
-                                                            </option>
-                                                            <%}%>
-                                                    </select>
-                                                </td>
-                                                <td class="dasboardTaskCell">
-                                                    <input required type="date" id="dueDate" name="dueDate">
-                                                </td>
-
-                                                <td class="dasboardTaskCell">
-                                                    <select required name="status" id="status">
-                                                        <option disabled value="">--Please choose an option--</option>
-                                                        <option value="Icebox">Icebox</option>
-                                                        <option value="Current/MVP">Current/MVP</option>
-                                                        <option value="Completed">Completed</option>
-                                                    </select>
-                                                </td>
-                                                <td class="dasboardTaskCell">
-
-                                                    <button> <img class="updateImg" src="/images/add.png" alt="addTask">
-                                                    </button>
-                                                </td>
-                                            </form>
-                                        </tr>
                     </table>
 
                 </div>
-            </li>
-        </ul>
+    
+    </li>
+    </ul>
+
+
+    <div id="newTaskWrapper">
+        <div id="newTaskTitle">Add a task</div>
+        <div id="newTaskForm">
+            <form action="/projects/<%=project._id%>/task" method="POST">
+
+
+                <div>
+                    <input required type="text" name="taskName">
+                    <label for="taskName">Task</label>
+                </div>
+                <div>
+                    <select name="assignedTo" id="assignedTo">
+                        <option disabled value="">choose one:</option>
+                        <%for (let i=0; i<project.groupMembers.length; i++){%>
+                            <option value="<%=project.groupMembers[i]._id%>">
+                                <%=project.groupMembers[i].name%>
+                            </option>
+                            <%}%>
+                    </select>
+                    <label>Assigned To</label>
+                </div>
+
+                <div>
+                    <input required type="date" id="dueDate" name="dueDate">
+                    <label for="dueDate">Due</label>
+                </div>
+
+                <div>
+                    <select required name="status" id="status">
+                        <option disabled value="">--Please choose an option--</option>
+                        <option value="Icebox">Icebox</option>
+                        <option value="Current/MVP">Current/MVP</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                    <label>Status</label>
+
+                </div>
+
+                <button> <img class="updateImg" src="/images/add.png" alt="addTask">
+                </button>
+
+
+            </form>
+
+        </div>
+    </div>
+
+ 
+
+    </div>
 
 
 
-        <form method="" POST action="/projects/<%=project._id%>">
-            <button>Delete Project</button>
-        </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        let groupOpen = false;
+        let taskOpen = true;
 
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+        });
 
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.collapsible');
+            var instances = M.Collapsible.init(elems);
+        });
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <script>
-            let groupOpen = false;
-            let taskOpen = true;
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems);
+        });
 
-            document.addEventListener('DOMContentLoaded', function () {
-                var elems = document.querySelectorAll('.sidenav');
-                var instances = M.Sidenav.init(elems);
-            });
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.dropdown-trigger');
+            var instances = M.Dropdown.init(elems);
+        });
 
-            document.addEventListener('DOMContentLoaded', function () {
-                var elems = document.querySelectorAll('.collapsible');
-                var instances = M.Collapsible.init(elems);
-            });
-            document.addEventListener('DOMContentLoaded', function () {
-                var elems = document.querySelectorAll('select');
-                var instances = M.FormSelect.init(elems);
-            });
+        let groupHeader = document.getElementById("groupHeader");
+        let groupIcon = document.getElementById("groupIcon");
+        groupHeader.addEventListener("click", headerClick);
+        groupIcon.addEventListener("click", iconClick);
 
-            let groupHeader = document.getElementById("groupHeader");
-            let groupIcon = document.getElementById("groupIcon");
-            groupHeader.addEventListener("click", headerClick);
-            groupIcon.addEventListener("click", iconClick);
+        let taskHeader = document.getElementById("taskHeader");
+        let taskIcon = document.getElementById("taskIcon");
+        taskHeader.addEventListener("click", headerClick);
+        taskIcon.addEventListener("click", iconClick);
 
-            let taskHeader = document.getElementById("taskHeader");
-            let taskIcon = document.getElementById("taskIcon");
-            taskHeader.addEventListener("click", headerClick);
-            taskIcon.addEventListener("click", iconClick);
+        $(document).ready(function () {
+            $('select').material_select();
+        });
 
+        function headerClick(e) {
+            if (e.target.id == "groupHeader") {
+                if (groupOpen) {
+                    groupOpen = false;
+                    //add expand icon
+                    groupIcon.src = "/images/expand.png"
+                } else {
+                    groupOpen = true;
+                    groupIcon.src = "/images/collapse.png"
 
-            function headerClick(e) {
-                if (e.target.id == "groupHeader") {
-                    if (groupOpen) {
-                        groupOpen = false;
-                        //add expand icon
-                        groupIcon.src = "/images/expand.png"
-                    } else {
-                        groupOpen = true;
-                        groupIcon.src = "/images/collapse.png"
-
-                    }
-                }
-                if (e.target.id == "taskHeader") {
-                    if (taskOpen) {
-                        taskOpen = false;
-                        //add expand icon
-                        taskIcon.src = "/images/expand.png"
-                    } else {
-                        taskOpen = true;
-                        taskIcon.src = "/images/collapse.png"
-
-                    }
                 }
             }
+            if (e.target.id == "taskHeader") {
+                if (taskOpen) {
+                    taskOpen = false;
+                    //add expand icon
+                    taskIcon.src = "/images/expand.png"
+                } else {
+                    taskOpen = true;
+                    taskIcon.src = "/images/collapse.png"
 
-            function iconClick(e) {
-                if (e.target.id == "groupIcon") {
-                    if (groupOpen) {
-                        groupOpen = false;
-                        //add expand icon
-                        groupIcon.src = "/images/expand.png"
-                    } else {
-                        groupOpen = true;
-                        groupIcon.src = "/images/collapse.png"
-
-                    }
-                }
-                if (e.target.id == "taskIcon") {
-                    if (taskOpen) {
-                        taskOpen = false;
-                        //add expand icon
-                        taskIcon.src = "/images/expand.png"
-                    } else {
-                        taskOpen = true;
-                        taskIcon.src = "/images/collapse.png"
-                    }
                 }
             }
+        }
 
-        </script>
+        function iconClick(e) {
+            if (e.target.id == "groupIcon") {
+                if (groupOpen) {
+                    groupOpen = false;
+                    //add expand icon
+                    groupIcon.src = "/images/expand.png"
+                } else {
+                    groupOpen = true;
+                    groupIcon.src = "/images/collapse.png"
+
+                }
+            }
+            if (e.target.id == "taskIcon") {
+                if (taskOpen) {
+                    taskOpen = false;
+                    //add expand icon
+                    taskIcon.src = "/images/expand.png"
+                } else {
+                    taskOpen = true;
+                    taskIcon.src = "/images/collapse.png"
+                }
+            }
+        }
+
+    </script>
 
 </body>
 

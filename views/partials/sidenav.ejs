@@ -1,0 +1,32 @@
+
+    <ul id="slide-out" class="sidenav">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                </div>
+                <a href="#user"><img class="circle" src="/images/avatars/pp1.png"></a>
+                <a href="#name"><span class=" name">
+                        <%=user.name%>
+                    </span></a>
+            </div>
+        </li>
+
+        <%if(user.projects){%>
+            <%for (let i=0; i<userProjects.length; i++){%>
+                <li> <a href="/projects/<%=userProjects[i]._id%>">
+                        <%=userProjects[i].name%>
+                    </a> </li>
+                <%}%>
+                    <%}%>
+
+                        <li>
+                            <div class="divider"></div>
+                        </li>
+                        <li><a href="/projects/new"> + NEW PROJECT</a>
+                        </li>
+    </ul>
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">
+            <div id="sideNavBack">
+                <img src="/images/back.png" height="30px">
+            </div>
+        </i></a>

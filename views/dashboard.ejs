@@ -5,53 +5,166 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="/stylesheets/dashboardStyle.css">
-    <link rel="stylesheet" href="/stylesheets/tableStyle.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <title>DASHBOARD</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="/stylesheets/global.css">
+
+    <!-- <style>
+        #sideNavBack {
+            position: absolute;
+            margin-top: 40vh;
+        }
+
+        #pageTitle {
+            font-size: 4rem;
+            color: #F506A9;
+            font-family: 'Bebas Neue', cursive;
+
+        }
+
+        #mainContent {
+            padding: 4rem 10rem;
+            display: flex;
+        }
+
+        /* tr {
+            border-bottom: 1px solid #F506A9;
+        } */
+
+        .sortArrow {
+            height: 12px;
+        }
+
+        #filterSelect {
+            flex: 2;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        #taskContainer {
+            flex: 6;
+        }
+        .navLink{
+            color: black;
+        }
+    </style> -->
+
 </head>
 
 <body>
 
-    <div id="sidenav">
-        <div id="userNav">
-            <%= user.name%>
-                <form action="/profile/<%=user._id%>/edit">
-                    <button>EDIT PROFILE</button>
-                </form>
-                <form action="/logout">
-                    <button>LOGOUT</button>
-                </form>
+    <%- include('./partials/nav.ejs'); %>
+    <%- include('./partials/sidenav.ejs'); %>
+
+    <!-- <nav>
+        <div class="nav-wrapper teal accent-2">
+            <span id="pageTitle">MY DASHBOARD</span>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a class="navLink" href="/dashboard">DASH</a></li>
+                <li><a class="navLink" href="/logout">LOGOUT</a></li>
+            </ul>
         </div>
-        <div id="sideContent">
-            <%if(user.projects){%>
-                <%for (let i=0; i<userProjects.length; i++){%>
-                    <div> <a href="/projects/<%=userProjects[i]._id%>">
-                            <%=userProjects[i].name%>
-                        </a> </div>
+    </nav> -->
+<!-- 
+    <ul id="slide-out" class="sidenav">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                </div>
+                <a href="#user"><img class="circle" src="/images/avatars/pp1.png"></a>
+                <a href="#name"><span class=" name">
+                        <%=user.name%>
+                    </span></a>
+            </div>
+        </li>
+
+        <%if(user.projects){%>
+            <%for (let i=0; i<userProjects.length; i++){%>
+                <li> <a href="/projects/<%=userProjects[i]._id%>">
+                        <%=userProjects[i].name%>
+                    </a> </li>
+                <%}%>
                     <%}%>
-                        <%}%>
-                            <div>
-                                <a href="/projects/new"> + NEW PROJECT</a>
-                            </div>
+
+                        <li>
+                            <div class="divider"></div>
+                        </li>
+                        <li><a href="/projects/new"> + NEW PROJECT</a>
+                        </li>
+    </ul>
+    <a href="#" data-target="slide-out" class="sidenav-trigger"><i class="material-icons">
+            <div id="sideNavBack">
+                <img src="/images/back.png" height="30px">
+            </div>
+        </i></a> -->
+
+
+
+    <div id="mainContent">
+
+        <div id="filterSelect">
+
+            <form action="#">
+                <div>
+                    Filter by Project
+
+                    <p>
+                        <label>
+                            <input name="projectid" type="checkbox" />
+                            <span>Project 1</span>
+                        </label>
+                    </p>
+
+                </div>
+                <div>
+                    Filter by Status
+                    <p>
+                        <label>
+                            <input name="icebox" type="checkbox" />
+                            <span>Icebox</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input name="current" type="checkbox" />
+                            <span>Current/MVP</span>
+                        </label>
+                    </p>
+                    <p>
+                        <label>
+                            <input name="completed" type="checkbox" />
+                            <span>Completed</span>
+                        </label>
+                    </p>
+                </div>
+                <div>
+                    <label for="dueAfter">Due after</label>
+                    <input name="dueAfter" type="text" class="datepicker">
+                </div>
+
+                <div>
+                    <label for="dueBefore">Due before</label>
+                    <input name="dueBefore" type="text" class="datepicker">
+                </div>
+            </form>
         </div>
-    </div>
-    <div id="mainSec">
-        <div id="mainHeader">
-            MY DASHBOARD
-        </div>
-        <div id="mainContent">
-            <div class="tableTitle"> MY TASKS </div>
-            <table id="dashboardTaskTable">
-                <th class="dasboardTaskHeader">Task</th>
-                <th class="dasboardTaskHeader">Project</th>
-                <th class="dasboardTaskHeader">Due</th>
-                <th class="dasboardTaskHeader">Status</th>
+
+        <div id="taskContainer">
+
+            <table class="bordered" id="dashboardTaskTable">
+                <th id="taskHeader" class="dasboardTaskHeader">Task <img id="taskArrow" class="sortArrow"
+                        src="/images/down.png" alt=""></th>
+                <th id="projectHeader" class="dasboardTaskHeader">Project <img id="projArrow" class="sortArrow" src=""
+                        alt=""></th>
+                <th id="dueHeader" class="dasboardTaskHeader">Due <img id="dueArrow" class="sortArrow" src="" alt="">
+                </th>
+                <th id="statusHeader" class="dasboardTaskHeader">Status <img id="statusArrow" class="sortArrow" src=""
+                        alt=""></th>
                 <%if (userTasks){%>
                     <%for (let i=0; i<userTasks.length; i++){%>
                         <tr class="dasboardTaskRow">
@@ -59,7 +172,9 @@
                                 <%=userTasks[i].name%>
                             </td>
                             <td class="dasboardTaskCell">
-                                <%=userTasks[i].project%>
+                                <a href="/projects/<%=userTasks[i].project%>">
+                                    <%=userTasks[i].project.name%>
+                                </a>
                             </td>
                             <td class="dasboardTaskCell">
                                 <%=userTasks[i].due.toDateString()%>
@@ -74,11 +189,282 @@
 
             </table>
 
+            <div>
+                <canvas id="myChart" width="200" height="100"></canvas>
+
+            </div>
         </div>
 
     </div>
 
-    <script src="/javascripts/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+
+        let taskSortUp = true;
+        let projSortUp = true;
+        let dueSortUp = true;
+        let statusSortUp = true;
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('select');
+            var instances = M.FormSelect.init(elems);
+        });
+        document.addEventListener('DOMContentLoaded', function () {
+            var elems = document.querySelectorAll('.datepicker');
+            var instances = M.Datepicker.init(elems);
+        });
+
+        //get header elements
+        let taskEl = document.getElementById("taskHeader");
+        let projectEl = document.getElementById("projectHeader");
+        let dueEl = document.getElementById("dueHeader");
+        let statusEl = document.getElementById("statusHeader");
+
+        //get arrow elements
+
+        let taskArrow = document.getElementById("taskArrow");
+        let projArrow = document.getElementById("projArrow");
+        let dueArrow = document.getElementById("dueArrow");
+        let statusArrow = document.getElementById("statusArrow");
+
+
+        taskEl.addEventListener("click", headerClick);
+        projectEl.addEventListener("click", headerClick);
+        dueEl.addEventListener("click", headerClick);
+        statusEl.addEventListener("click", headerClick);
+
+        taskArrow.addEventListener("click", arrowClick);
+        projArrow.addEventListener("click", arrowClick);
+        dueArrow.addEventListener("click", arrowClick);
+        statusArrow.addEventListener("click", arrowClick);
+
+        function headerClick(e) {
+            //determine which header was clicked
+            if (e.target.id == "taskHeader") {
+                console.log("task header");
+                if (taskSortUp == true) {
+                    console.log("sort down");
+                    taskSortUp = false;
+                    //clear all other arrows
+                    projArrow.src = "";
+                    dueArrow.src = "";
+                    statusArrow.src = "";
+                    //sort down
+                    taskArrow.src = "/images/down.png"
+                } else {
+                    console.log("sort up");
+                    taskSortUp = true;
+                    //clear all other arrows
+                    projArrow.src = "";
+                    dueArrow.src = "";
+                    statusArrow.src = "";
+                    //sort up
+                    taskArrow.src = "/images/up.png"
+
+                }
+
+            } else if (e.target.id == "projectHeader") {
+                console.log("project header");
+                if (projSortUp == true) {
+                    console.log("sort down");
+                    projSortUp = false;
+                    //clear all other arrows
+                    taskArrow.src = "";
+                    dueArrow.src = "";
+                    statusArrow.src = "";
+                    //sort down
+                    projArrow.src = "/images/down.png"
+                } else {
+                    console.log("sort up");
+                    projSortUp = true;
+                    //clear all other arrows
+                    taskArrow.src = "";
+                    dueArrow.src = "";
+                    statusArrow.src = "";
+                    //sort up
+                    projArrow.src = "/images/up.png"
+
+                }
+            } else if (e.target.id == "dueHeader") {
+                console.log("due header");
+                if (dueSortUp == true) {
+                    console.log("sort down");
+                    dueSortUp = false;
+                    //clear all other arrows
+                    projArrow.src = "";
+                    taskArrow.src = "";
+                    statusArrow.src = "";
+                    //sort down
+                    dueArrow.src = "/images/down.png"
+                } else {
+                    console.log("sort up");
+                    dueSortUp = true;
+                    //clear all other arrows
+                    projArrow.src = "";
+                    taskArrow.src = "";
+                    statusArrow.src = "";
+                    //sort up
+                    dueArrow.src = "/images/up.png"
+
+                }
+            } else if (e.target.id == "statusHeader") {
+                console.log("status header");
+                if (statusSortUp == true) {
+                    console.log("sort down");
+                    statusSortUp = false;
+                    //clear all other arrows
+                    projArrow.src = "";
+                    dueArrow.src = "";
+                    taskArrow.src = "";
+                    //sort down
+                    statusArrow.src = "/images/down.png"
+                } else {
+                    console.log("sort up");
+                    statusSortUp = true;
+                    //clear all other arrows
+                    projArrow.src = "";
+                    dueArrow.src = "";
+                    taskArrow.src = "";
+                    //sort up
+                    statusArrow.src = "/images/up.png"
+
+                }
+            }
+
+        }
+
+        function arrowClick(e) {
+            //determine which header was clicked
+            if (e.target.id == "taskArrow") {
+                console.log("task arrow");
+                if (taskSortUp == true) {
+                    console.log("sort down");
+                    taskSortUp = false;
+                    //clear all other arrows
+                    projArrow.src = "";
+                    dueArrow.src = "";
+                    statusArrow.src = "";
+                    //sort down
+                    taskArrow.src = "/images/down.png"
+                } else {
+                    console.log("sort up");
+                    taskSortUp = true;
+                    //clear all other arrows
+                    projArrow.src = "";
+                    dueArrow.src = "";
+                    statusArrow.src = "";
+                    //sort up
+                    taskArrow.src = "/images/up.png"
+
+                }
+
+            } else if (e.target.id == "projArrow") {
+                console.log("project arrow");
+                if (projSortUp == true) {
+                    console.log("sort down");
+                    projSortUp = false;
+                    //clear all other arrows
+                    taskArrow.src = "";
+                    dueArrow.src = "";
+                    statusArrow.src = "";
+                    //sort down
+                    projArrow.src = "/images/down.png"
+                } else {
+                    console.log("sort up");
+                    projSortUp = true;
+                    //clear all other arrows
+                    taskArrow.src = "";
+                    dueArrow.src = "";
+                    statusArrow.src = "";
+                    //sort up
+                    projArrow.src = "/images/up.png"
+
+                }
+            } else if (e.target.id == "dueArrow") {
+                console.log("due arrow");
+                if (dueSortUp == true) {
+                    console.log("sort down");
+                    dueSortUp = false;
+                    //clear all other arrows
+                    projArrow.src = "";
+                    taskArrow.src = "";
+                    statusArrow.src = "";
+                    //sort down
+                    dueArrow.src = "/images/down.png"
+                } else {
+                    console.log("sort up");
+                    dueSortUp = true;
+                    //clear all other arrows
+                    projArrow.src = "";
+                    taskArrow.src = "";
+                    statusArrow.src = "";
+                    //sort up
+                    dueArrow.src = "/images/up.png"
+
+                }
+            } else if (e.target.id == "statusArrow") {
+                console.log("status arrow");
+                if (statusSortUp == true) {
+                    console.log("sort down");
+                    statusSortUp = false;
+                    //clear all other arrows
+                    projArrow.src = "";
+                    dueArrow.src = "";
+                    taskArrow.src = "";
+                    //sort down
+                    statusArrow.src = "/images/down.png"
+                } else {
+                    console.log("sort up");
+                    statusSortUp = true;
+                    //clear all other arrows
+                    projArrow.src = "";
+                    dueArrow.src = "";
+                    taskArrow.src = "";
+                    //sort up
+                    statusArrow.src = "/images/up.png"
+
+                }
+            }
+
+        }
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Icebox', 'Current', 'Completed'],
+                datasets: [{
+                    label: "",
+                    data: [4, 2, 3],
+                    backgroundColor: [
+                        'rgba(206, 150, 251, 0.2)',
+                        'rgba(255, 143, 207, 0.2)',
+                        'rgba(0, 194, 186, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(206, 150, 251, 1)',
+                        'rgba(255, 143, 207, 1)',
+                        'rgba(0, 194, 186, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
 </body>
 
 </html>

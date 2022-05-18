@@ -2,20 +2,20 @@ const { model } = require('mongoose');
 //const { findById } = require('../models/project');
 let Project = require('../models/project');
 let User = require('../models/user');
+let Task = require('../models/task');
+
 
 async function newProject(req, res) {
     var newProject = new Project({
         name: req.body.projectName,
         createdBy: req.user.id,
         groupMembers: [req.user.id],
-        tasks: []
     });
     await newProject.save();
     res.redirect('/projects/'+newProject._id);
 }
 
 async function createProject(req, res){
-    console.log("req user create proj", req.user);
     let user = req.user;
     if(user){
     let userProjects = await Project.find({ groupMembers: { "$in" : [user._id]} });
@@ -37,18 +37,23 @@ async function showProject(req, res) {
     //get potential group members --> all users not already a group member
     let potGM = users.filter(user=> !project.groupMembers.includes(user._id));
 
-    console.log("potGm", potGM);
+    let tasks = await Task.find({ project: projectId });
+
+    console.log("show proj tasks", tasks);
 
     //populate members
     await project.populate('groupMembers');
-    await project.populate('tasks.assignedTo');
-    await project.populate('tasks.project');
+    for (let i=0; i<tasks.length; i++){
+        await tasks[i].populate('assignedTo');
+    }
+    // await project.populate('tasks.assignedTo');
+    // await project.populate('tasks.project');
 
     
     let user = req.user;
     if(user){
     let userProjects = await Project.find({ groupMembers: { "$in" : [user._id]} });
-    res.render('project-show2', { project, users, user, userProjects, potGM});
+    res.render('project-show2', { project, tasks, users, user, userProjects, potGM});
     } else {
         res.redirect('/');
     }
@@ -65,19 +70,20 @@ async function addTask(req, res) {
 
     console.log("add task req body", req.body);
     //create new task
-    let newTask = {
+    let newTask = new Task({
         name: req.body.taskName,
         project: projectId,
         assignedTo: req.body.assignedTo,
         due: req.body.dueDate,
         status: req.body.status
-    }
+    });
+    await newTask.save();
     //get project 
-    let project = await Project.findById(projectId);
+    // let project = await Project.findById(projectId);
     //push task to project
-    project.tasks.push(newTask);
+    // project.tasks.push(newTask);
     //save
-    await project.save();
+    // await project.save();
 
     //redirect to /project/:id
     res.redirect('/projects/' + projectId);
@@ -105,38 +111,44 @@ async function showTask(req, res) {
 
 async function editTask(req, res) {
     let taskId = req.params.taskId;
+    let task = await Task.findById(taskId);
     //get project
-    let projectId = req.params.id;
-    let project = await Project.findById(projectId);
-    //get task 
-    for (let i = 0; i < project.tasks.length; i++) {
-        if (project.tasks[i]._id == taskId) {
-            //edit the task
-            project.tasks[i].name = req.body.taskName;
-            project.tasks[i].assignedTo = req.body.assignedTo;
-            project.tasks[i].due = req.body.dueDate;
-        }
-    }
+    // let projectId = req.params.id;
+    // let project = await Project.findById(projectId);
+    // //get task 
+    // for (let i = 0; i < project.tasks.length; i++) {
+    //     if (project.tasks[i]._id == taskId) {
+    //         //edit the task
+    //         project.tasks[i].name = req.body.taskName;
+    //         project.tasks[i].assignedTo = req.body.assignedTo;
+    //         project.tasks[i].due = req.body.dueDate;
+    //     }
+    // }
     //save project
-    await project.save();
+    task.name = req.body.taskName;
+    task.assignedTo = req.body.assignedTo;
+    task.due = req.body.dueDate;
+    task.status = req.body.status;
+    await task.save();
     res.redirect('/projects/' + projectId);
 }
 
 async function deleteTask(req, res) {
     console.log("in delete task");
     let taskId = req.params.taskId;
-    //get project
-    let projectId = req.params.id;
-    let project = await Project.findById(projectId);
-    //get task 
-    for (let i = 0; i < project.tasks.length; i++) {
-        if (project.tasks[i]._id == taskId) {
-            //splice the task
-            project.tasks.splice(i, 1);
-        }
-    }
-    //save project
-    await project.save();
+    await Task.findByIdAndDelete(taskId);
+    // //get project
+    // let projectId = req.params.id;
+    // let project = await Project.findById(projectId);
+    // //get task 
+    // for (let i = 0; i < project.tasks.length; i++) {
+    //     if (project.tasks[i]._id == taskId) {
+    //         //splice the task
+    //         project.tasks.splice(i, 1);
+    //     }
+    // }
+    // //save project
+    // await project.save();
     res.redirect('/projects/' + projectId);
 }
 

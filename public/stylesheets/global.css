@@ -1,0 +1,39 @@
+#sideNavBack {
+    position: absolute;
+    margin-top: 40vh;
+}
+
+#pageTitle {
+    font-size: 4rem;
+    color: #F506A9;
+    font-family: 'Bebas Neue', cursive;
+
+}
+
+#mainContent {
+    padding: 4rem 10rem;
+    display: flex;
+}
+
+/* tr {
+    border-bottom: 1px solid #F506A9;
+} */
+
+.sortArrow {
+    height: 12px;
+}
+
+#filterSelect {
+    flex: 2;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#taskContainer {
+    flex: 6;
+}
+.navLink{
+    color: black;
+}
