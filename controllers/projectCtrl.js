@@ -44,6 +44,10 @@ async function showProject(req, res) {
     }
 
     let user = req.user;
+
+    console.log("tasks", tasks);
+    //try modifying array for dates
+
     if (user) {
         let userProjects = await Project.find({ groupMembers: { "$in": [user._id] } });
         res.render('project-show', { project, tasks, user, userProjects, potGM, title });
@@ -61,6 +65,7 @@ async function deleteProject(req, res) {
 async function addTask(req, res) {
     //get project id
     let projectId = req.params.id;
+    console.log("date coming in", req.body.dueDate)
     //create new task
     let newTask = new Task({
         name: req.body.taskName,
@@ -118,6 +123,20 @@ async function deleteTask(req, res) {
     res.redirect('/projects/' + projectId);
 }
 
+async function deleteTaskFromProj(req, res) {
+    let projectId = req.params.id;
+    let taskId = req.params.taskId;
+    await Task.findByIdAndDelete(taskId);
+    res.redirect('/projects/' + projectId);
+}
+
+async function deleteTaskFromDash(req, res) {
+    let projectId = req.params.id;
+    let taskId = req.params.taskId;
+    await Task.findByIdAndDelete(taskId);
+    res.redirect('/dashboard');
+}
+
 async function newMember(req, res) {
     //get project
     let projectId = req.params.id;
@@ -170,6 +189,8 @@ module.exports = {
     showTask,
     editTask,
     deleteTask,
+    deleteTaskFromProj,
+    deleteTaskFromDash,
     newMember,
     addMember,
     deleteMember

@@ -1,13 +1,11 @@
-
 <%- include('./partials/header.ejs'); %>
 
-<%- include('./partials/nav.ejs'); %>
-<%- include('./partials/sidenav.ejs'); %>
+    <%- include('./partials/nav.ejs'); %>
+        <%- include('./partials/sidenav.ejs'); %>
 
             <div id="mainContent">
 
                 <div id="filterSelect">
-
                     <form action="#">
                         <div>
                             Filter by Project
@@ -32,19 +30,19 @@
                             Filter by Status
                             <p>
                                 <label>
-                                    <input name="icebox" type="checkbox" />
+                                    <input class="statusFilter" name="icebox" type="checkbox" />
                                     <span>Icebox</span>
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input name="current" type="checkbox" />
+                                    <input class="statusFilter" name="current" type="checkbox" />
                                     <span>Current/MVP</span>
                                 </label>
                             </p>
                             <p>
                                 <label>
-                                    <input name="completed" type="checkbox" />
+                                    <input class="statusFilter" name="completed" type="checkbox" />
                                     <span>Completed</span>
                                 </label>
                             </p>
@@ -64,31 +62,47 @@
                 <div id="taskContainer">
 
                     <table class="bordered" id="dashboardTaskTable">
-                        <th id="taskHeader" class="dasboardTaskHeader">Task <img id="taskArrow" class="sortArrow"
-                                src="/images/down.png" alt=""></th>
-                        <th id="projectHeader" class="dasboardTaskHeader">Project <img id="projArrow" class="sortArrow"
-                                src="" alt=""></th>
-                        <th id="dueHeader" class="dasboardTaskHeader">Due <img id="dueArrow" class="sortArrow" src=""
-                                alt="">
+                        <th id="taskHeader" class="">Task <img id="taskArrow" class="sortArrow" src="/images/down.png"
+                                alt=""></th>
+                        <th id="projectHeader" class="">Project <img id="projArrow" class="sortArrow" src="" alt="">
                         </th>
-                        <th id="statusHeader" class="dasboardTaskHeader">Status <img id="statusArrow" class="sortArrow"
-                                src="" alt=""></th>
+                        <th id="dueHeader" class="">Due <img id="dueArrow" class="sortArrow" src="" alt="">
+                        </th>
+                        <th id="statusHeader" class="">Status <img id="statusArrow" class="sortArrow" src="" alt="">
+                        </th>
+                        <th id="actionHeader" class="">Action </th>
+                        <div id="subTaskContainer">
+
+                        </div>
                         <%if (userTasks){%>
                             <%for (let i=0; i<userTasks.length; i++){%>
-                                <tr class="dasboardTaskRow">
-                                    <td class="dasboardTaskCell">
+                                <tr>
+                                    <td>
                                         <%=userTasks[i].name%>
                                     </td>
-                                    <td class="dasboardTaskCell">
-                                        <a href="/projects/<%=userTasks[i].project%>">
+                                    <td>
+                                        <a href="/projects/<%=userTasks[i].project._id%>">
                                             <%=userTasks[i].project.name%>
                                         </a>
                                     </td>
-                                    <td class="dasboardTaskCell">
+                                    <td>
                                         <%=userTasks[i].due.toDateString()%>
                                     </td>
-                                    <td class="dasboardTaskCell">
+                                    <td>
                                         <%=userTasks[i].status%>
+                                    </td>
+                                    <td>
+                                        <a href="/projects/<%=userTasks[i].project._id%>/task/<%=userTasks[i]._id%>">
+                                            <img class="updateImg" src="/images/edit.png" alt="editTask">
+                                        </a>
+                                        <form method="POST"
+                                            action="/projects/<%=userTasks[i].project._id%>/task/<%=userTasks[i]._id%>/destroy?_method=DELETE">
+                                            <button class="updateBtn"> <img class="updateImg" src="/images/delete.png"
+                                                    alt="deleteTask">
+                                            </button>
+                                        </form>
+
+
                                     </td>
                                 </tr>
                                 <%}%>
@@ -194,7 +208,7 @@
                             //clear all other arrows
                             taskArrow.src = "";
                             dueArrow.src = "";
-                            statusArrow.src = "";
+                            st2atusArrow.src = "";
                             //sort up
                             projArrow.src = "/images/up.png"
 
@@ -343,61 +357,112 @@
                 }
 
                 const ctx = document.getElementById('myChart').getContext('2d');
-                const myChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Icebox', 'Current', 'Completed'],
-                        datasets: [{
-                            label: "",
-                            data: [4, 2, 3],
-                            backgroundColor: [
-                                'rgba(206, 150, 251, 0.2)',
-                                'rgba(255, 143, 207, 0.2)',
-                                'rgba(0, 194, 186, 0.2)'
-                            ],
-                            borderColor: [
-                                'rgba(206, 150, 251, 1)',
-                                'rgba(255, 143, 207, 1)',
-                                'rgba(0, 194, 186, 1)'
-                            ],
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
+                let myChart;
+                function renderGraph(icebox, current, completed) {
+                    myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Icebox', 'Current', 'Completed'],
+                            datasets: [{
+                                label: "",
+                                data: [icebox, current, completed],
+                                backgroundColor: [
+                                    'rgba(206, 150, 251, 0.2)',
+                                    'rgba(255, 143, 207, 0.2)',
+                                    'rgba(0, 194, 186, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(206, 150, 251, 1)',
+                                    'rgba(255, 143, 207, 1)',
+                                    'rgba(0, 194, 186, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
                             }
                         }
-                    }
-                });
+                    });
 
-                var checkbox = document.querySelectorAll("input[type=checkbox]");
+                }
+
+                var projFilters = document.querySelectorAll(".projectFilter");
+                var statusFilters = document.querySelectorAll(".statusFilter");
 
                 let projChecked = [];
-                for (let i = 0; i < checkbox.length; i++) {
-                    checkbox[i].addEventListener('change', function () {
+                let status = [];
+                for (let i = 0; i < projFilters.length; i++) {
+                    projFilters[i].addEventListener('change', function () {
                         if (this.checked) {
                             projChecked.push(this.name);
-                            console.log(projChecked);
-                            filterTasks();
+                            dashFilter(projChecked, status);
                         } else {
-                            let projIndex = projChecked.findIndex((e) => { e == this.name });
-                            projChecked.splice(projIndex, 1);
-                            console.log(projChecked);
-                            filterTasks();
+                            let projIndex;
+                            for (let j = 0; j < projChecked.length; j++) {
+                                if (projChecked[j] == this.name) {
+                                    projChecked.splice(j, 1);
+                                }
+                            }
+                            dashFilter(projChecked, status);
                         }
                     });
                 }
 
-                async function filterTasks() {
-                    const endpoint = '/testAPI';
-                    let testing = ["test1", "test2"];
-                    let data = await fetch(endpoint, {testing}).then(res => res.json());
-                    console.log(data);
-                } 
+                for (let i = 0; i < statusFilters.length; i++) {
+                    statusFilters[i].addEventListener('change', function () {
+                        if (this.checked) {
+                            console.log("checked", this.name);
+                            // projChecked.push(this.name);
+                            // dashFilter(projChecked, status);
+                        } else {
+                            console.log("unchecked", this.name);
+                            // let projIndex;
+                            // for (let j=0; j<projChecked.length; j++){
+                            //     if (projChecked[j] == this.name){
+                            //         projChecked.splice(j, 1);
+                            //     }
+                            // }
+                            // dashFilter(projChecked, status);
+                        }
+                    });
+                }
+                let icebox = 0;
+                let current = 0;
+                let completed = 0;
+                async function dashFilter(projects) {
+                    console.log("in filter tasks");
+                    const endpoint = '/dashFilter';
+                    let taskList = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            projects
+                        })
+                    }).then(res => res.json());
 
+                    console.log("task list", taskList);
 
+                    for (let i = 0; i < taskList.length; i++) {
+                        if (taskList[i].status == 'icebox') {
+                            icebox++;
+                        } else if (taskList[i].status == 'current') {
+                            current++;
+                        } else {
+                            completed++;
+                        }
+                    }
+                    if (myChart) {
+                        myChart.destroy();
+                    }
+                    renderGraph(icebox, current, completed);
+
+                }
+
+                filterTasks();
             </script>
 
             <!-- </body>

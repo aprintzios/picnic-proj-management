@@ -8,57 +8,61 @@
 </head>
 <body> -->
 
-    <%- include('./partials/header.ejs'); %>
+<%- include('./partials/header.ejs'); %>
 
     <%- include('./partials/nav.ejs'); %>
         <%- include('./partials/sidenav.ejs'); %>
 
-        <div id="mainContent">
-            <div>
-                
-                <%=task.due%>
+            <div id="mainContent">
+                <div>
+                    <a href="/projects/<%=project._id%>/">BACK TO PROJECT</a>   
+                <br><br>
+                        <form action="/projects/<%=project._id%>/task/<%=task._id%>?_method=PUT" method="POST">
+                            <label for="taskName">Task Name</label>
+                            <input required name="taskName" type="text" value="<%=task.name%>">
+                            <label for="assignedTo">Assigned To:</label>
+                            <select required name="assignedTo" id="assignedTo">
+                                <option value="">--Please choose an option--</option>
+                                <%for (let i=0; i<project.groupMembers.length; i++){%>
+                                    <%=task.assignedTo.id%>
 
-    <form action="/projects/<%=project._id%>/task/<%=task._id%>?_method=PUT" method="POST">
-        <label for="taskName">Task Name</label>
-        <input required name="taskName" type="text" value="<%=task.name%>">
-        <label for="assignedTo">Assigned To:</label>
-        <select required name="assignedTo" id="assignedTo">
-        <option value="">--Please choose an option--</option>
-        <%for (let i=0; i<project.groupMembers.length; i++){%>
-            <%=task.assignedTo.id%>
+                                        <%=project.groupMembers[i].id%>
 
-            <%=project.groupMembers[i].id%>
+                                            <%if (project.groupMembers[i].id==task.assignedTo.id){%>
+                                                <option selected="selected" value="<%=project.groupMembers[i]._id%>">
+                                                    <%=project.groupMembers[i].name%>
+                                                </option>
+                                                <%} else {%>
+                                                    <option value="<%=project.groupMembers[i]._id%>">
+                                                        <%=project.groupMembers[i].name%>
+                                                    </option>
+                                                    <%}%>
+                                                        <%}%>
+                            </select>
+                            <input required value="<%=task.due%>" type="date" id="dueDate" name="dueDate">
+                            <select required name="status" id="status">
+                                <option disabled value="<%=task.due%>">--Please choose an option--</option>
+                                <option value="Icebox">Icebox</option>
+                                <option value="Current/MVP">Current/MVP</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                            <label>Status</label>
+                            <button>Submit</button>
+                        </form>
 
-            <%if (project.groupMembers[i].id == task.assignedTo.id){%>
-             <option selected="selected" value="<%=project.groupMembers[i]._id%>"><%=project.groupMembers[i].name%></option>
-            <%} else {%>
-            <option value="<%=project.groupMembers[i]._id%>"><%=project.groupMembers[i].name%></option>
-            <%}%>
-        <%}%>
-        </select>
-        <input required value="<%=task.due%>" type="date" id="dueDate" name="dueDate">
-        <select required name="status" id="status">
-            <option disabled value="<%=task.due%>">--Please choose an option--</option>
-            <option value="Icebox">Icebox</option>
-            <option value="Current/MVP">Current/MVP</option>
-            <option value="Completed">Completed</option>
-        </select>
-        <label>Status</label>
-        <button>Submit</button>
-    </form>
+                        <form method="POST"
+                            action="/projects/<%=project._id%>/task/<%=task._id%>/destroy?_method=DELETE">
+                            <button>Delete Task</button>
+                        </form>
+                </div>
+            </div>
 
-    <form method="POST" action="/projects/<%=project._id%>/task/<%=task._id%>/destroy?_method=DELETE" >
-        <button>Delete Task</button>
-    </form>
-</div>
-</div>
- 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-<script>
+            <script>
 
-document.addEventListener('DOMContentLoaded', function () {
+                document.addEventListener('DOMContentLoaded', function () {
                     var elems = document.querySelectorAll('.sidenav');
                     var instances = M.Sidenav.init(elems);
                 });
@@ -70,6 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     var elems = document.querySelectorAll('.datepicker');
                     var instances = M.Datepicker.init(elems);
                 });
-</script>
-</body>
-</html>
+            </script>
+            </body>
+
+            </html>

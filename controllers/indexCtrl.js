@@ -8,9 +8,10 @@ async function showDashboard(req, res, next) {
         let userProjects = await Project.find({ groupMembers: { "$in": [req.user._id] } });
 
         let userTasks = await Task.find({ assignedTo: req.user.id })
-
-        console.log("user Tasks", userTasks);
-
+        for (let i=0; i<userTasks.length; i++){
+            await userTasks[i].populate('project');
+        }
+        
         res.render('dashboard', {
             user: req.user,
             userProjects,

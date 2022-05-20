@@ -12,7 +12,7 @@
                         <div>
                             Filter by Person
 
-                         
+
                             <%if(project.groupMembers){%>
                                 <%for (let i=0; i<project.groupMembers.length; i++){%>
 
@@ -74,12 +74,12 @@
                                     <label for="">
                                         <%=project.groupMembers[i].name%>
                                     </label>
-                                    <button> <img class="updateImg" src="/images/delete.png" alt="deleteMember">
+                                    <button class="updateBtn"> <img class="updateImg" src="/images/delete.png" alt="deleteMember">
                                     </button>
                                 </form>
                                 <%}%>
                                     <%}%>
-                                        <form action="/projects/<%=project._id%>/addMember" method="POST">
+                                        <form id="gmForm" action="/projects/<%=project._id%>/addMember" method="POST">
                                             <select required name="newMember" id="user-select">
 
                                                 <option disabled value="">Add member</option>
@@ -90,7 +90,7 @@
                                                     <%}%>
                                             </select>
 
-                                            <button> <img class="updateImg" src="/images/add.png" alt="addMember">
+                                            <button class="updateBtn"> <img class="updateImg" src="/images/add.png" alt="addMember">
                                             </button>
                                         </form>
 
@@ -103,44 +103,44 @@
                 <div id="taskContainer">
                     <div>
 
-                        <table id="dashboardTaskTable">
-                            <th class="dasboardTaskHeader">TASK</th>
-                            <th class="dasboardTaskHeader">ASSIGNED TO</th>
-                            <th class="dasboardTaskHeader">DUE</th>
-                            <th class="dasboardTaskHeader">STATUS</th>
-                            <th class="dasboardTaskHeader">ACTIONS</th>
-                            <%if (tasks){%>
-                                <% for (let i=0; i<tasks.length; i++){%>
-                                    <tr class="dasboardTaskRow">
-                                        <td class="dasboardTaskCell">
-                                            <%=tasks[i].name%>
-                                        </td>
-                                        <td class="dasboardTaskCell">
-                                            <%=tasks[i].assignedTo.name%>
-                                        </td>
-                                        <td class="dasboardTaskCell">
-                                            <%=tasks[i].due.toDateString()%>
-                                        </td>
-                                        <td class="dasboardTaskCell">
-                                            <%=tasks[i].status%>
-                                        </td>
-                                        <td class="dasboardTaskCell">
-                                            <a href="/projects/<%=project._id%>/task/<%=tasks[i]._id%>">
-                                                <img class="updateImg" src="/images/edit.png" alt="editTask">
-                                            </a>
-                                            <form method="POST"
-                                                action="/projects/<%=project._id%>/task/<%=tasks[i]._id%>/destroy?_method=DELETE">
-                                                <button> <img class="updateImg" src="/images/delete.png"
-                                                        alt="deleteTask">
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    <%}%>
+                            <table id="dashboardTaskTable">
+                                <th class="dasboardTaskHeader">TASK</th>
+                                <th class="dasboardTaskHeader">ASSIGNED TO</th>
+                                <th class="dasboardTaskHeader">DUE</th>
+                                <th class="dasboardTaskHeader">STATUS</th>
+                                <th class="dasboardTaskHeader">ACTIONS</th>
+                                <%if(tasks){%>
+                                    <% for (let i=0; i<tasks.length; i++){%>
+                                        <tr class="dasboardTaskRow">
+                                            <td class="dasboardTaskCell">
+                                                <%=tasks[i].name%>
+                                            </td>
+                                            <td class="dasboardTaskCell">
+                                                <%=tasks[i].assignedTo.name%>
+                                            </td>
+                                            <td class="dasboardTaskCell">
+                                                <%=tasks[i].due.toDateString()%>
+                                            </td>
+                                            <td class="dasboardTaskCell">
+                                                <%=tasks[i].status%>
+                                            </td>
+                                            <td class="dasboardTaskCell">
+                                                <a href="/projects/<%=project._id%>/task/<%=tasks[i]._id%>">
+                                                    <img class="updateImg" src="/images/edit.png" alt="editTask">
+                                                </a>
+                                                <form method="POST"
+                                                    action="/projects/<%=project._id%>/task/<%=tasks[i]._id%>/destroy?_method=DELETE">
+                                                    <button class="updateBtn"> <img class="updateImg" src="/images/delete.png"
+                                                            alt="deleteTask">
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
                                         <%}%>
+                                            <%}%>
 
 
-                        </table>
+                            </table>
 
                     </div>
 
@@ -179,9 +179,9 @@
                                         <div>
                                             <select required name="status" id="status">
                                                 <option disabled value="">--Please choose an option--</option>
-                                                <option value="Icebox">Icebox</option>
-                                                <option value="Current/MVP">Current/MVP</option>
-                                                <option value="Completed">Completed</option>
+                                                <option value="icebox">Icebox</option>
+                                                <option value="current">Current/MVP</option>
+                                                <option value="completed">Completed</option>
                                             </select>
                                             <label>Status</label>
 

@@ -9,15 +9,16 @@
     font-family: 'Bebas Neue', cursive;
 
 }
+.lightGreen{
+    /* background-color: #E2FFB8; */
+    background-color: #6FFDE1;
+}
 
 #mainContent {
     padding: 4rem 10rem;
     display: flex;
 }
 
-/* tr {
-    border-bottom: 1px solid #F506A9;
-} */
 
 .sortArrow {
     height: 12px;
@@ -28,7 +29,6 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
-    justify-content: center;
     align-items: flex-start;
 }
 
@@ -71,4 +71,11 @@
 }
 #newTaskForm {
     flex: 4;
+}
+.updateBtn{
+    background-color: white;
+    border: none;
+}
+.updateBtn:hover{
+    cursor: pointer;
 }
