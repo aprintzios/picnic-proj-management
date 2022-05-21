@@ -47,7 +47,7 @@
                                 </label>
                             </p>
                         </div>
-                        <div>
+                        <!-- <div>
                             <label for="dueAfter">Due after</label>
                             <input name="dueAfter" type="text" class="datepicker">
                         </div>
@@ -55,7 +55,7 @@
                         <div>
                             <label for="dueBefore">Due before</label>
                             <input name="dueBefore" type="text" class="datepicker">
-                        </div>
+                        </div> -->
                     </form>
                 </div>
 
@@ -70,10 +70,7 @@
                         </th>
                         <th id="statusHeader" class="">Status <img id="statusArrow" class="sortArrow" src="" alt="">
                         </th>
-                        <th id="actionHeader" class="">Action </th>
-                        <div id="subTaskContainer">
-
-                        </div>
+                        <!-- 
                         <%if (userTasks){%>
                             <%for (let i=0; i<userTasks.length; i++){%>
                                 <tr>
@@ -106,8 +103,7 @@
                                     </td>
                                 </tr>
                                 <%}%>
-                                    <%}%>
-
+                                    <%}%> -->
 
                     </table>
 
@@ -127,7 +123,7 @@
                 let projSortUp = true;
                 let dueSortUp = true;
                 let statusSortUp = true;
-
+                let taskList;
 
                 document.addEventListener('DOMContentLoaded', function () {
                     var elems = document.querySelectorAll('.sidenav');
@@ -155,6 +151,9 @@
                 let dueArrow = document.getElementById("dueArrow");
                 let statusArrow = document.getElementById("statusArrow");
 
+                //get task container
+                let taskContainer = document.getElementById("dashboardTaskTable");
+
 
                 taskEl.addEventListener("click", headerClick);
                 projectEl.addEventListener("click", headerClick);
@@ -169,9 +168,7 @@
                 function headerClick(e) {
                     //determine which header was clicked
                     if (e.target.id == "taskHeader") {
-                        console.log("task header");
                         if (taskSortUp == true) {
-                            console.log("sort down");
                             taskSortUp = false;
                             //clear all other arrows
                             projArrow.src = "";
@@ -179,8 +176,10 @@
                             statusArrow.src = "";
                             //sort down
                             taskArrow.src = "/images/down.png"
+                            //sort taskList
+                            sortList(taskList, "taskdown");
+                            renderTable(taskList);
                         } else {
-                            console.log("sort up");
                             taskSortUp = true;
                             //clear all other arrows
                             projArrow.src = "";
@@ -188,13 +187,12 @@
                             statusArrow.src = "";
                             //sort up
                             taskArrow.src = "/images/up.png"
-
+                            sortList(taskList, "taskup");
+                            renderTable(taskList);
                         }
 
                     } else if (e.target.id == "projectHeader") {
-                        console.log("project header");
                         if (projSortUp == true) {
-                            console.log("sort down");
                             projSortUp = false;
                             //clear all other arrows
                             taskArrow.src = "";
@@ -202,21 +200,21 @@
                             statusArrow.src = "";
                             //sort down
                             projArrow.src = "/images/down.png"
+                            sortList(taskList, "projdown");
+                            renderTable(taskList);
                         } else {
-                            console.log("sort up");
                             projSortUp = true;
                             //clear all other arrows
                             taskArrow.src = "";
                             dueArrow.src = "";
-                            st2atusArrow.src = "";
+                            statusArrow.src = "";
                             //sort up
                             projArrow.src = "/images/up.png"
-
+                            sortList(taskList, "projup");
+                            renderTable(taskList);
                         }
                     } else if (e.target.id == "dueHeader") {
-                        console.log("due header");
                         if (dueSortUp == true) {
-                            console.log("sort down");
                             dueSortUp = false;
                             //clear all other arrows
                             projArrow.src = "";
@@ -224,8 +222,9 @@
                             statusArrow.src = "";
                             //sort down
                             dueArrow.src = "/images/down.png"
+                            sortList(taskList, "datedown");
+                            renderTable(taskList);
                         } else {
-                            console.log("sort up");
                             dueSortUp = true;
                             //clear all other arrows
                             projArrow.src = "";
@@ -233,7 +232,8 @@
                             statusArrow.src = "";
                             //sort up
                             dueArrow.src = "/images/up.png"
-
+                            sortList(taskList, "dateup");
+                            renderTable(taskList);
                         }
                     } else if (e.target.id == "statusHeader") {
                         console.log("status header");
@@ -246,6 +246,8 @@
                             taskArrow.src = "";
                             //sort down
                             statusArrow.src = "/images/down.png"
+                            sortList(taskList, "statusdown");
+                            renderTable(taskList);
                         } else {
                             console.log("sort up");
                             statusSortUp = true;
@@ -255,7 +257,8 @@
                             taskArrow.src = "";
                             //sort up
                             statusArrow.src = "/images/up.png"
-
+                            sortList(taskList, "statusup");
+                            renderTable(taskList);
                         }
                     }
 
@@ -264,9 +267,7 @@
                 function arrowClick(e) {
                     //determine which header was clicked
                     if (e.target.id == "taskArrow") {
-                        console.log("task arrow");
                         if (taskSortUp == true) {
-                            console.log("sort down");
                             taskSortUp = false;
                             //clear all other arrows
                             projArrow.src = "";
@@ -274,8 +275,9 @@
                             statusArrow.src = "";
                             //sort down
                             taskArrow.src = "/images/down.png"
+                            sortList(taskList, "taskdown");
+                            renderTable(taskList);
                         } else {
-                            console.log("sort up");
                             taskSortUp = true;
                             //clear all other arrows
                             projArrow.src = "";
@@ -283,13 +285,12 @@
                             statusArrow.src = "";
                             //sort up
                             taskArrow.src = "/images/up.png"
-
+                            sortList(taskList, "taskup");
+                            renderTable(taskList);
                         }
 
                     } else if (e.target.id == "projArrow") {
-                        console.log("project arrow");
                         if (projSortUp == true) {
-                            console.log("sort down");
                             projSortUp = false;
                             //clear all other arrows
                             taskArrow.src = "";
@@ -297,8 +298,9 @@
                             statusArrow.src = "";
                             //sort down
                             projArrow.src = "/images/down.png"
+                            sortList(taskList, "projdown");
+                            renderTable(taskList);
                         } else {
-                            console.log("sort up");
                             projSortUp = true;
                             //clear all other arrows
                             taskArrow.src = "";
@@ -306,12 +308,11 @@
                             statusArrow.src = "";
                             //sort up
                             projArrow.src = "/images/up.png"
-
+                            sortList(taskList, "projup");
+                            renderTable(taskList);
                         }
                     } else if (e.target.id == "dueArrow") {
-                        console.log("due arrow");
                         if (dueSortUp == true) {
-                            console.log("sort down");
                             dueSortUp = false;
                             //clear all other arrows
                             projArrow.src = "";
@@ -319,8 +320,9 @@
                             statusArrow.src = "";
                             //sort down
                             dueArrow.src = "/images/down.png"
+                            sortList(taskList, "datedown");
+                            renderTable(taskList);
                         } else {
-                            console.log("sort up");
                             dueSortUp = true;
                             //clear all other arrows
                             projArrow.src = "";
@@ -328,12 +330,11 @@
                             statusArrow.src = "";
                             //sort up
                             dueArrow.src = "/images/up.png"
-
+                            sortList(taskList, "dateup");
+                            renderTable(taskList);
                         }
                     } else if (e.target.id == "statusArrow") {
-                        console.log("status arrow");
                         if (statusSortUp == true) {
-                            console.log("sort down");
                             statusSortUp = false;
                             //clear all other arrows
                             projArrow.src = "";
@@ -341,8 +342,9 @@
                             taskArrow.src = "";
                             //sort down
                             statusArrow.src = "/images/down.png"
+                            sortList(taskList, "statusdown");
+                            renderTable(taskList);
                         } else {
-                            console.log("sort up");
                             statusSortUp = true;
                             //clear all other arrows
                             projArrow.src = "";
@@ -350,12 +352,47 @@
                             taskArrow.src = "";
                             //sort up
                             statusArrow.src = "/images/up.png"
-
+                            sortList(taskList, "statusup");
+                            renderTable(taskList);
                         }
                     }
 
                 }
 
+
+                function renderTable(taskList) {
+
+                    //clear previous
+                    var taskChildren = taskContainer.querySelectorAll('.taskRow');
+                    for (let i = 0; i < taskChildren.length; i++) {
+                        taskChildren[i].remove();
+                    }
+
+
+                    for (let i = 0; i < taskList.length; i++) {
+                        let newElementRow = document.createElement('tr');
+                        newElementRow.classList.add("taskRow")
+                        let td1 = document.createElement('td');
+                        let td2 = document.createElement('td');
+                        let td3 = document.createElement('td');
+                        let td4 = document.createElement('td');
+                        let pa = document.createElement('a');
+
+                        td1.innerHTML = taskList[i].name;
+                        pa.href = "/projects/" + taskList[i].project._id;
+                        pa.innerText = taskList[i].project.name;
+                        td2.appendChild(pa);
+                        td3.innerHTML = taskList[i].due.slice(0, 10);
+                        td4.innerHTML = taskList[i].status;
+
+                        newElementRow.appendChild(td1);
+                        newElementRow.appendChild(td2);
+                        newElementRow.appendChild(td3);
+                        newElementRow.appendChild(td4);
+                        taskContainer.appendChild(newElementRow);
+                    }
+
+                }
                 const ctx = document.getElementById('myChart').getContext('2d');
                 let myChart;
                 function renderGraph(icebox, current, completed) {
@@ -415,37 +452,42 @@
                 for (let i = 0; i < statusFilters.length; i++) {
                     statusFilters[i].addEventListener('change', function () {
                         if (this.checked) {
-                            console.log("checked", this.name);
-                            // projChecked.push(this.name);
-                            // dashFilter(projChecked, status);
+                            //find which status was checked and push it
+                            if (this.name == 'icebox') {
+                                status.push('icebox');
+                            } else if (this.name == 'current') {
+                                status.push('current');
+                            } else {
+                                status.push('completed');
+                            }
+                            dashFilter(projChecked, status);
                         } else {
-                            console.log("unchecked", this.name);
-                            // let projIndex;
-                            // for (let j=0; j<projChecked.length; j++){
-                            //     if (projChecked[j] == this.name){
-                            //         projChecked.splice(j, 1);
-                            //     }
-                            // }
-                            // dashFilter(projChecked, status);
+                            for (let j = 0; j < status.length; j++) {
+                                if (status[j] == this.name) {
+                                    status.splice(j, 1);
+                                }
+                            }
+                            dashFilter(projChecked, status);
                         }
                     });
                 }
                 let icebox = 0;
                 let current = 0;
                 let completed = 0;
-                async function dashFilter(projects) {
-                    console.log("in filter tasks");
+                async function dashFilter(projects, status) {
                     const endpoint = '/dashFilter';
-                    let taskList = await fetch(endpoint, {
+                    taskList = await fetch(endpoint, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            projects
+                            projects,
+                            status
                         })
                     }).then(res => res.json());
 
-                    console.log("task list", taskList);
-
+                    icebox = 0;
+                    current = 0;
+                    completed = 0;
                     for (let i = 0; i < taskList.length; i++) {
                         if (taskList[i].status == 'icebox') {
                             icebox++;
@@ -458,11 +500,149 @@
                     if (myChart) {
                         myChart.destroy();
                     }
-                    renderGraph(icebox, current, completed);
+                    //sort here
 
+                    renderTable(taskList);
+                    renderGraph(icebox, current, completed);
                 }
 
-                filterTasks();
+                dashFilter(projChecked, status);
+
+                function sortList(list, sort) {
+                    if (sort == "taskdown") {
+                        for (let i = 0; i < list.length; i++) {
+                            let min = list[i].name;
+                            let minIndex = i;
+                            for (let j = i + 1; j < list.length; j++) {
+                                if (list[j].name < min) {
+                                    min = list[j].name;
+                                    minIndex = j;
+                                }
+
+                            }
+                            //swap i and minindex
+                            let temp = list[i];
+                            list[i] = list[minIndex];
+                            list[minIndex] = temp;
+                        }
+                    } else if (sort == "taskup") {
+                        for (let i = 0; i < list.length; i++) {
+                            let min = list[i].name;
+                            let minIndex = i;
+                            for (let j = i + 1; j < list.length; j++) {
+                                if (list[j].name < min) {
+                                    min = list[j].name;
+                                    minIndex = j;
+                                }
+
+                            }
+                            //swap i and minindex
+                            let temp = list[i];
+                            list[i] = list[minIndex];
+                            list[minIndex] = temp;
+                        }
+                        list.reverse();
+                    } else if (sort == "projdown") {
+                        for (let i = 0; i < list.length; i++) {
+                            let min = list[i].project.name;
+                            let minIndex = i;
+                            for (let j = i + 1; j < list.length; j++) {
+                                if (list[j].project.name < min) {
+                                    min = list[j].project.name;
+                                    minIndex = j;
+                                }
+                            }
+                            //swap i and minindex
+                            let temp = list[i];
+                            list[i] = list[minIndex];
+                            list[minIndex] = temp;
+                        }
+                        list.reverse();
+                    } else if (sort == "projup") {
+                        for (let i = 0; i < list.length; i++) {
+                            let min = list[i].project.name;
+                            let minIndex = i;
+                            for (let j = i + 1; j < list.length; j++) {
+                                if (list[j].project.name < min) {
+                                    min = list[j].project.name;
+                                    minIndex = j;
+                                }
+
+                            }
+                            //swap i and minindex
+                            let temp = list[i];
+                            list[i] = list[minIndex];
+                            list[minIndex] = temp;
+                        }
+                    } else if (sort == "datedown") {
+                        for (let i = 0; i < list.length; i++) {
+                            let min = list[i].due;
+                            let minIndex = i;
+                            for (let j = i + 1; j < list.length; j++) {
+                                if (list[j].due < min) {
+                                    min = list[j].due;
+                                    minIndex = j;
+                                }
+                            }
+                            //swap i and minindex
+                            let temp = list[i];
+                            list[i] = list[minIndex];
+                            list[minIndex] = temp;
+                        }
+
+                        console.log("proj down sort", list);
+                    } else if (sort == "dateup") {
+                        console.log("function due up");
+                        for (let i = 0; i < list.length; i++) {
+                            let min = list[i].due;
+                            let minIndex = i;
+                            for (let j = i + 1; j < list.length; j++) {
+                                if (list[j].due < min) {
+                                    min = list[j].due;
+                                    minIndex = j;
+                                }
+
+                            }
+                            //swap i and minindex
+                            let temp = list[i];
+                            list[i] = list[minIndex];
+                            list[minIndex] = temp;
+                        }
+                        list.reverse();
+                    } else if (sort == "statusdown") {
+                        for (let i = 0; i < list.length; i++) {
+                            let min = list[i].status;
+                            let minIndex = i;
+                            for (let j = i + 1; j < list.length; j++) {
+                                if (list[j].status < min) {
+                                    min = list[j].status;
+                                    minIndex = j;
+                                }
+                            }
+                            //swap i and minindex
+                            let temp = list[i];
+                            list[i] = list[minIndex];
+                            list[minIndex] = temp;
+                        }
+                    } else if (sort == "statusup") {
+                        for (let i = 0; i < list.length; i++) {
+                            let min = list[i].status;
+                            let minIndex = i;
+                            for (let j = i + 1; j < list.length; j++) {
+                                if (list[j].status < min) {
+                                    min = list[j].status;
+                                    minIndex = j;
+                                }
+
+                            }
+                            //swap i and minindex
+                            let temp = list[i];
+                            list[i] = list[minIndex];
+                            list[minIndex] = temp;
+                        }
+                        list.reverse();
+                    }
+                }
             </script>
 
             <!-- </body>

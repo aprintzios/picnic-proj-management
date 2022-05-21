@@ -59,7 +59,12 @@ async function showProject(req, res) {
 }
 
 async function deleteProject(req, res) {
-
+    let projectId = req.params.id;
+    //delete project
+    await Project.findByIdAndDelete(projectId);
+    //delete all tasks associated with project
+    await Task.deleteMany({project: projectId});
+    res.redirect('/dashboard');
 }
 
 async function addTask(req, res) {

@@ -5,7 +5,6 @@
 /*-- cached elements --*/
 let taskCells = document.getElementsByClassName('dasboardTaskCell');
 
-console.log("task cell", taskCells);
 /*-- event listeners --*/
 for (let i=0; i<taskCells.length; i++){
     taskCells[i].addEventListener('click', taskClick);

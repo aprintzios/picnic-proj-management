@@ -47,12 +47,12 @@
                                 <option value="Completed">Completed</option>
                             </select>
                             <label>Status</label>
-                            <button>Submit</button>
+                            <button class="waves-effect waves-light btn">Submit</button>
                         </form>
-
+                        <br>
                         <form method="POST"
                             action="/projects/<%=project._id%>/task/<%=task._id%>/destroy?_method=DELETE">
-                            <button>Delete Task</button>
+                            <button class="waves-effect waves-light btn">Delete Task</button>
                         </form>
                 </div>
             </div>

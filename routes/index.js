@@ -64,30 +64,46 @@ router.post('/testAPI', async function (req, res, next) {
 
 
 router.post('/dashFilter', async function (req, res, next) {
-  console.log('test api req body', req.body);
   let projects = req.body.projects;
   let status = req.body.status;
-  console.log("projects", projects);
   let user = req.user;
   let filteredTasks = [];
   if (user) {
-    if (projects && status) {
+    if (projects.length>0 && status.length>0) {
       for (let i = 0; i < projects.length; i++) {
         let tasks;
         for (j=0; j<status.length; j++){
           tasks = await Task.find({ project: projects[i], assignedTo: user, status : status[j] });
-            for (let k=0; j<tasks.length; k++){
+            for (let k=0; k<tasks.length; k++){
+              await tasks[k].populate('project');
               filteredTasks.push(tasks[k]);
             }
         }
       }
-    } else if (projects){
-
-    } else if (status) {
-
+    } else if (projects.length>0){
+      for (let i = 0; i < projects.length; i++) {
+        let tasks;
+          tasks = await Task.find({ project: projects[i], assignedTo: user });
+            for (let k=0; k<tasks.length; k++){
+              await tasks[k].populate('project');
+              filteredTasks.push(tasks[k]);
+            }
+        }
+      } else if (status.length>0) {
+        for (let i = 0; i < status.length; i++) {
+          let tasks;
+            tasks = await Task.find({ status: status[i], assignedTo: user });
+              for (let k=0; k<tasks.length; k++){
+                await tasks[k].populate('project');
+                filteredTasks.push(tasks[k]);
+              }
+          }
     } else {
       //return all 
       filteredTasks =  await Task.find({ assignedTo: user });
+      for (let i=0; i<filteredTasks.length; i++){
+        await filteredTasks[i].populate('project');
+      }
     }
   }
     res.json(filteredTasks);

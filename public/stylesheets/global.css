@@ -79,3 +79,6 @@
 .updateBtn:hover{
     cursor: pointer;
 }
+.navLink{
+    padding-top: 10px;
+}

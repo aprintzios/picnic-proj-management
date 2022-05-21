@@ -50,15 +50,6 @@
                                 </label>
                             </p>
                         </div>
-                        <div>
-                            <label for="dueAfter">Due after</label>
-                            <input name="dueAfter" type="text" class="datepicker">
-                        </div>
-
-                        <div>
-                            <label for="dueBefore">Due before</label>
-                            <input name="dueBefore" type="text" class="datepicker">
-                        </div>
                     </form>
 
                     <div>
@@ -90,13 +81,14 @@
                                                     <%}%>
                                             </select>
 
-                                            <button class="updateBtn"> <img class="updateImg" src="/images/add.png" alt="addMember">
+                                            <button class="waves-effect waves-light btn"> ADD MEMBER
                                             </button>
                                         </form>
+                                        <br><br>
 
 
-                                        <form method="" POST action="/projects/<%=project._id%>">
-                                            <button>Delete Project</button>
+                                        <form method="POST" action="/projects/<%=project._id%>?_method=DELETE">
+                                            <button class="waves-effect waves-light btn">Delete Project</button>
                                         </form>
                     </div>
                 </div>
@@ -187,7 +179,7 @@
 
                                         </div>
 
-                                        <button> <img class="updateImg" src="/images/add.png" alt="addTask">
+                                        <button class="waves-effect waves-light btn"> ADD TASK
                                         </button>
 
 
