@@ -157,6 +157,7 @@
                                         <%}%> -->
 
 
+
                         </table>
 
                     </div>
@@ -577,16 +578,36 @@
                         let td2 = document.createElement('td');
                         let td3 = document.createElement('td');
                         let td4 = document.createElement('td');
+                        let td5 = document.createElement('td');
 
                         td1.innerHTML = taskList[i].name;
                         td2.innerHTML = taskList[i].assignedTo.name;
                         td3.innerHTML = taskList[i].due.slice(0, 10);
                         td4.innerHTML = taskList[i].status;
 
+                        let a5 = document.createElement('a');
+                        a5.href = "/projects/"+projectId.defaultValue+"/task/" + taskList[i]._id;
+                        a5.innerText = "edit";
+                        td5.appendChild(a5);
+                        let br = document.createElement('br');
+                        td5.appendChild(br);
+
+
+                        let f5 = document.createElement('form');
+                        f5.method = "POST";
+                        f5.action = "/projects/" + projectId.defaultValue + "/task/" + taskList[i]._id + "/destroy?_method=DELETE";
+
+                        let f5a = document.createElement('a');
+                        f5a.setAttribute('onclick', 'this.parentNode.submit();');
+                        f5a.innerText = "delete";
+                        f5.appendChild(f5a);
+                        td5.appendChild(f5);
+
                         newElementRow.appendChild(td1);
                         newElementRow.appendChild(td2);
                         newElementRow.appendChild(td3);
                         newElementRow.appendChild(td4);
+                        newElementRow.appendChild(td5);
                         taskContainer.appendChild(newElementRow);
                     }
 
@@ -655,13 +676,13 @@
                             list[minIndex] = temp;
                         }
                         list.reverse();
-                    } else if (sort == "peopledown") {
+                    } else if (sort == "assigneddown") {
                         for (let i = 0; i < list.length; i++) {
-                            let min = list[i].project.name;
+                            let min = list[i].assignedTo.name;
                             let minIndex = i;
                             for (let j = i + 1; j < list.length; j++) {
-                                if (list[j].project.name < min) {
-                                    min = list[j].project.name;
+                                if (list[j].assignedTo.name < min) {
+                                    min = list[j].assignedTo.name;
                                     minIndex = j;
                                 }
                             }
@@ -671,7 +692,7 @@
                             list[minIndex] = temp;
                         }
                         list.reverse();
-                    } else if (sort == "peopleup") {
+                    } else if (sort == "assignedup") {
                         for (let i = 0; i < list.length; i++) {
                             let min = list[i].project.name;
                             let minIndex = i;

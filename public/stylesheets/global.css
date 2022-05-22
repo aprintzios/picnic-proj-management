@@ -10,7 +10,8 @@
 
 }
 .lightGreen{
-    background-color: #E2FFB8;
+    background-color: #E1B6FF;
+    /* background-color: #E2FFB8; */
     /* background-color: #6FFDE1; */
 }
 
@@ -81,4 +82,7 @@
 }
 .navLink{
     padding-top: 10px;
+}
+a:hover{
+    cursor: pointer;
 }
