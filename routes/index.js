@@ -110,6 +110,54 @@ router.post('/dashFilter', async function (req, res, next) {
 
 });
 
+
+
+router.post('/projFilter', async function (req, res, next) {
+  let people = req.body.people;
+  let status = req.body.status;
+  let projId = req.body.project;
+  //let user = req.user;
+  let filteredTasks = [];
+    if (people.length>0 && status.length>0) {
+      for (let i = 0; i < people.length; i++) {
+        let tasks;
+        for (j=0; j<status.length; j++){
+          tasks = await Task.find({ assignedTo: people[i], status : status[j], project: projId });
+            for (let k=0; k<tasks.length; k++){
+              await tasks[k].populate('assignedTo');
+              filteredTasks.push(tasks[k]);
+            }
+        }
+      }
+    } else if (people.length>0){
+      for (let i = 0; i < people.length; i++) {
+        let tasks;
+          tasks = await Task.find({ assignedTo: people[i], project: projId });
+            for (let k=0; k<tasks.length; k++){
+              await tasks[k].populate('assignedTo');
+              filteredTasks.push(tasks[k]);
+            }
+        }
+      } else if (status.length>0) {
+        for (let i = 0; i < status.length; i++) {
+          let tasks;
+            tasks = await Task.find({ status: status[i], project: projId });
+              for (let k=0; k<tasks.length; k++){
+                await tasks[k].populate('assignedTo');
+                filteredTasks.push(tasks[k]);
+              }
+          }
+    } else {
+      //return all 
+      filteredTasks =  await Task.find({ project: projId });
+      for (let i=0; i<filteredTasks.length; i++){
+        await filteredTasks[i].populate('assignedTo');
+      }
+    }
+    res.json(filteredTasks);
+
+});
+
 router.get('/testCSS', function (req, res, next) {
   res.render('testCSS.ejs');
 });

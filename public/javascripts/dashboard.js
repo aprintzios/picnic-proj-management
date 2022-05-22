@@ -1,321 +1,78 @@
-<%- include('./partials/header.ejs'); %>
 
-    <%- include('./partials/nav.ejs'); %>
-        <%- include('./partials/sidenav.ejs'); %>
-
-
-            <div id="mainContent">
-
-                <div id="filterSelect">
-
-                    <form action="#">
-                        <div>
-                            Filter by Person
-
-
-                            <%if(project.groupMembers){%>
-                                <%for (let i=0; i<project.groupMembers.length; i++){%>
-
-                                    <p>
-                                        <label>
-                                            <input class="personFilter" name="<%=project.groupMembers[i]._id%>"
-                                                type="checkbox" />
-                                            <span>
-                                                <%=project.groupMembers[i].name%>
-                                            </span>
-                                        </label>
-                                    </p>
-                                    <%}%>
-                                        <%}%>
-
-                        </div>
-                        <div>
-                            Filter by Status
-                            <p>
-                                <label>
-                                    <input class="statusFilter" name="icebox" type="checkbox" />
-                                    <span>Icebox</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input class="statusFilter" name="current" type="checkbox" />
-                                    <span>Current/MVP</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input class="statusFilter" name="completed" type="checkbox" />
-                                    <span>Completed</span>
-                                </label>
-                            </p>
-                        </div>
-                        <!-- <div>
-                            Filter by Status
-                            <p>
-                                <label>
-                                    <input name="icebox" type="checkbox" />
-                                    <span>Icebox</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input name="current" type="checkbox" />
-                                    <span>Current/MVP</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input name="completed" type="checkbox" />
-                                    <span>Completed</span>
-                                </label>
-                            </p>
-                        </div> -->
-                    </form>
-
-                    <div>
-
-
-                        GROUP MEMBERS
-                        <br>
-                        <%if (project.groupMembers){%>
-                            <%for (let i=0; i< project.groupMembers.length; i++){%>
-                                <!-- <%=project.groupMembers[i].name%> -->
-                                <form method="POST"
-                                    action="/projects/<%=project._id%>/member/<%=project.groupMembers[i]._id%>/destroy?_method=DELETE">
-                                    <label for="">
-                                        <%=project.groupMembers[i].name%>
-                                    </label>
-                                    <button class="updateBtn"> <img class="updateImg" src="/images/delete.png"
-                                            alt="deleteMember">
-                                    </button>
-                                </form>
-                                <%}%>
-                                    <%}%>
-                                        <form id="gmForm" action="/projects/<%=project._id%>/addMember" method="POST">
-                                            <select required name="newMember" id="user-select">
-
-                                                <option disabled value="">Add member</option>
-                                                <%for (let i=0; i<potGM.length; i++){%>
-                                                    <option class="gmOption" value="<%=potGM[i]._id%>">
-                                                        <%=potGM[i].name%>
-                                                    </option>
-                                                    <%}%>
-                                            </select>
-
-                                            <button class="waves-effect waves-light btn"> ADD MEMBER
-                                            </button>
-                                        </form>
-                                        <br><br>
-
-
-                                        <form method="POST" action="/projects/<%=project._id%>?_method=DELETE">
-                                            <button class="waves-effect waves-light btn">Delete Project</button>
-                                        </form>
-                    </div>
-                </div>
-                <div id="taskContainer">
-                    <div>
-                        <table id="dashboardTaskTable">
-                            <th id="taskHeader">Task <img id="taskArrow" class="sortArrow" src="/images/down.png"
-                                    alt=""></th>
-                            <th id="assignedHeader">Assigned to <img id="assignedArrow" class="sortArrow" src=""
-                                    alt=""></th>
-                            <th id="dueHeader">Due <img id="dueArrow" class="sortArrow" src="" alt="">
-                            </th>
-                            <th id="statusHeader">Status <img id="statusArrow" class="sortArrow" src="" alt="">
-                            </th>
-                            <th id="actionHeader">Actions</th>
-                            <!-- <%if(tasks){%>
-                                <% for (let i=0; i<tasks.length; i++){%>
-                                    <tr class="dasboardTaskRow">
-                                        <td class="dasboardTaskCell">
-                                            <%=tasks[i].name%>
-                                        </td>
-                                        <td class="dasboardTaskCell">
-                                            <%=tasks[i].assignedTo.name%>
-                                        </td>
-                                        <td class="dasboardTaskCell">
-                                            <%=tasks[i].due.toDateString()%>
-                                        </td>
-                                        <td class="dasboardTaskCell">
-                                            <%=tasks[i].status%>
-                                        </td>
-                                        <td class="dasboardTaskCell">
-                                            <a href="/projects/<%=project._id%>/task/<%=tasks[i]._id%>">
-                                                <img class="updateImg" src="/images/edit.png" alt="editTask">
-                                            </a>
-                                            <form method="POST"
-                                                action="/projects/<%=project._id%>/task/<%=tasks[i]._id%>/destroy?_method=DELETE">
-                                                <button class="updateBtn"> <img class="updateImg"
-                                                        src="/images/delete.png" alt="deleteTask">
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    <%}%>
-                                        <%}%> -->
-
-
-                        </table>
-
-                    </div>
-
-                    <ul class="collapsible">
-                        <li>
-                            <div id="taskDiv" class="collapsible-header"><img id="taskIcon" class="icon"
-                                    src="/images/expand.png" alt=""> &nbsp; ADD A TASK</div>
-                            <div class="collapsible-body">
-
-                                <div id="newTaskForm">
-
-                                    <form action="/projects/<%=project._id%>/task" method="POST">
-
-
-                                        <div>
-                                            <input required type="text" name="taskName">
-                                            <label for="taskName">Task</label>
-                                        </div>
-                                        <div>
-                                            <select name="assignedTo" id="assignedTo">
-                                                <option disabled value="">choose one:</option>
-                                                <%for (let i=0; i<project.groupMembers.length; i++){%>
-                                                    <option value="<%=project.groupMembers[i]._id%>">
-                                                        <%=project.groupMembers[i].name%>
-                                                    </option>
-                                                    <%}%>
-                                            </select>
-                                            <label>Assigned To</label>
-                                        </div>
-
-                                        <div>
-                                            <input required type="date" id="dueDate" name="dueDate">
-                                            <label for="dueDate">Due</label>
-                                        </div>
-
-                                        <div>
-                                            <select required name="status" id="status">
-                                                <option disabled value="">--Please choose an option--</option>
-                                                <option value="icebox">Icebox</option>
-                                                <option value="current">Current/MVP</option>
-                                                <option value="completed">Completed</option>
-                                            </select>
-                                            <label>Status</label>
-
-                                        </div>
-
-                                        <button class="waves-effect waves-light btn"> ADD TASK
-                                        </button>
-
-
-                                    </form>
-
-                                </div>
-                        </li>
-                    </ul>
-                </div>
-
-                <input id="projectId" type="hidden" value="<%=project.id%>">
-            </div>
-
-
-
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-            <script>
-                let groupOpen = false;
-                let taskOpen = true;
                 let taskSortUp = true;
-                let assignedSortUp = true;
+                let projSortUp = true;
                 let dueSortUp = true;
                 let statusSortUp = true;
                 let taskList;
-                let peopleChecked = [];
+                let projChecked = [];
                 let status = [];
+                let myChart;
+                let icebox = 0;
+                let current = 0;
+                let completed = 0;
 
-                //cached elements
-                // let groupHeader = document.getElementById("groupHeader");
-                // let groupIcon = document.getElementById("groupIcon");
-                // groupHeader.addEventListener("click", headerClick);
-                // groupIcon.addEventListener("click", iconClick);
-
-                let taskDiv = document.getElementById("taskDiv");
-                let taskIcon = document.getElementById("taskIcon");
-                taskDiv.addEventListener("click", headerClick);
-                taskIcon.addEventListener("click", iconClick);
                 //get filter elements
-                var personFilters = document.querySelectorAll(".personFilter");
+                var projFilters = document.querySelectorAll(".projectFilter");
                 var statusFilters = document.querySelectorAll(".statusFilter");
-
 
                 //get header elements
                 let taskEl = document.getElementById("taskHeader");
-                let assignedEl = document.getElementById("assignedHeader");
+                let projectEl = document.getElementById("projectHeader");
                 let dueEl = document.getElementById("dueHeader");
                 let statusEl = document.getElementById("statusHeader");
 
                 //get arrow elements
 
                 let taskArrow = document.getElementById("taskArrow");
-                let assignedArrow = document.getElementById("assignedArrow");
+                let projArrow = document.getElementById("projArrow");
                 let dueArrow = document.getElementById("dueArrow");
                 let statusArrow = document.getElementById("statusArrow");
 
-
                 //get task container
                 let taskContainer = document.getElementById("dashboardTaskTable");
-                let projectId = document.getElementById("projectId");
 
-                //event listeners
+                //get chart element
+                const ctx = document.getElementById('myChart').getContext('2d');
+
+
+                //add event listeners
                 document.addEventListener('DOMContentLoaded', function () {
                     var elems = document.querySelectorAll('.sidenav');
                     var instances = M.Sidenav.init(elems);
                 });
-
-                document.addEventListener('DOMContentLoaded', function () {
-                    var elems = document.querySelectorAll('.collapsible');
-                    var instances = M.Collapsible.init(elems);
-                });
-
                 document.addEventListener('DOMContentLoaded', function () {
                     var elems = document.querySelectorAll('select');
                     var instances = M.FormSelect.init(elems);
                 });
-
-                document.addEventListener('DOMContentLoaded', function () {
-                    var elems = document.querySelectorAll('.dropdown-trigger');
-                    var instances = M.Dropdown.init(elems);
-                });
-
                 document.addEventListener('DOMContentLoaded', function () {
                     var elems = document.querySelectorAll('.datepicker');
                     var instances = M.Datepicker.init(elems);
                 });
 
-
                 taskEl.addEventListener("click", headerClick);
-                assignedEl.addEventListener("click", headerClick);
+                projectEl.addEventListener("click", headerClick);
                 dueEl.addEventListener("click", headerClick);
                 statusEl.addEventListener("click", headerClick);
 
                 taskArrow.addEventListener("click", arrowClick);
-                assignedArrow.addEventListener("click", arrowClick);
+                projArrow.addEventListener("click", arrowClick);
                 dueArrow.addEventListener("click", arrowClick);
                 statusArrow.addEventListener("click", arrowClick);
 
-                //filter event listeners
 
-                for (let i = 0; i < personFilters.length; i++) {
-                    personFilters[i].addEventListener('change', function () {
+                for (let i = 0; i < projFilters.length; i++) {
+                    projFilters[i].addEventListener('change', function () {
                         if (this.checked) {
-                            peopleChecked.push(this.name);
-                            projFilter(peopleChecked, status);
+                            projChecked.push(this.name);
+                            dashFilter(projChecked, status);
                         } else {
-                            for (let j = 0; j < peopleChecked.length; j++) {
-                                if (peopleChecked[j] == this.name) {
-                                    peopleChecked.splice(j, 1);
+                            let projIndex;
+                            for (let j = 0; j < projChecked.length; j++) {
+                                if (projChecked[j] == this.name) {
+                                    projChecked.splice(j, 1);
                                 }
                             }
-                            projFilter(peopleChecked, status);
+                            dashFilter(projChecked, status);
                         }
                     });
                 }
@@ -331,34 +88,26 @@
                             } else {
                                 status.push('completed');
                             }
-                            projFilter(peopleChecked, status);
+                            dashFilter(projChecked, status);
                         } else {
                             for (let j = 0; j < status.length; j++) {
                                 if (status[j] == this.name) {
                                     status.splice(j, 1);
                                 }
                             }
-                            projFilter(peopleChecked, status);
+                            dashFilter(projChecked, status);
                         }
                     });
                 }
 
+                //functions
                 function headerClick(e) {
-                    console.log("in header click");
-                    if (e.target.id == "taskDiv") {
-                        if (taskOpen) {
-                            taskOpen = false;
-                            //add expand icon
-                            taskIcon.src = "/images/expand.png"
-                        } else {
-                            taskOpen = true;
-                            taskIcon.src = "/images/collapse.png"
-                        }
-                    } else if (e.target.id == "taskHeader") {
+                    //determine which header was clicked
+                    if (e.target.id == "taskHeader") {
                         if (taskSortUp == true) {
                             taskSortUp = false;
                             //clear all other arrows
-                            assignedArrow.src = "";
+                            projArrow.src = "";
                             dueArrow.src = "";
                             statusArrow.src = "";
                             //sort down
@@ -369,7 +118,7 @@
                         } else {
                             taskSortUp = true;
                             //clear all other arrows
-                            assignedArrow.src = "";
+                            projArrow.src = "";
                             dueArrow.src = "";
                             statusArrow.src = "";
                             //sort up
@@ -378,33 +127,33 @@
                             renderTable(taskList);
                         }
 
-                    } else if (e.target.id == "assignedHeader") {
-                        if (assignedSortUp == true) {
-                            assignedSortUp = false;
+                    } else if (e.target.id == "projectHeader") {
+                        if (projSortUp == true) {
+                            projSortUp = false;
                             //clear all other arrows
                             taskArrow.src = "";
                             dueArrow.src = "";
                             statusArrow.src = "";
                             //sort down
-                            assignedArrow.src = "/images/down.png"
-                            sortList(taskList, "assigneddown");
+                            projArrow.src = "/images/down.png"
+                            sortList(taskList, "projdown");
                             renderTable(taskList);
                         } else {
-                            assignedSortUp = true;
+                            projSortUp = true;
                             //clear all other arrows
                             taskArrow.src = "";
                             dueArrow.src = "";
                             statusArrow.src = "";
                             //sort up
-                            assignedArrow.src = "/images/up.png"
-                            sortList(taskList, "assignedup");
+                            projArrow.src = "/images/up.png"
+                            sortList(taskList, "projup");
                             renderTable(taskList);
                         }
                     } else if (e.target.id == "dueHeader") {
                         if (dueSortUp == true) {
                             dueSortUp = false;
                             //clear all other arrows
-                            assignedArrow.src = "";
+                            projArrow.src = "";
                             taskArrow.src = "";
                             statusArrow.src = "";
                             //sort down
@@ -414,7 +163,7 @@
                         } else {
                             dueSortUp = true;
                             //clear all other arrows
-                            assignedArrow.src = "";
+                            projArrow.src = "";
                             taskArrow.src = "";
                             statusArrow.src = "";
                             //sort up
@@ -428,7 +177,7 @@
                             console.log("sort down");
                             statusSortUp = false;
                             //clear all other arrows
-                            assignedArrow.src = "";
+                            projArrow.src = "";
                             dueArrow.src = "";
                             taskArrow.src = "";
                             //sort down
@@ -439,7 +188,7 @@
                             console.log("sort up");
                             statusSortUp = true;
                             //clear all other arrows
-                            assignedArrow.src = "";
+                            projArrow.src = "";
                             dueArrow.src = "";
                             taskArrow.src = "";
                             //sort up
@@ -448,6 +197,7 @@
                             renderTable(taskList);
                         }
                     }
+
                 }
 
                 function arrowClick(e) {
@@ -456,7 +206,7 @@
                         if (taskSortUp == true) {
                             taskSortUp = false;
                             //clear all other arrows
-                            assignedArrow.src = "";
+                            projArrow.src = "";
                             dueArrow.src = "";
                             statusArrow.src = "";
                             //sort down
@@ -466,7 +216,7 @@
                         } else {
                             taskSortUp = true;
                             //clear all other arrows
-                            assignedArrow.src = "";
+                            projArrow.src = "";
                             dueArrow.src = "";
                             statusArrow.src = "";
                             //sort up
@@ -475,33 +225,33 @@
                             renderTable(taskList);
                         }
 
-                    } else if (e.target.id == "assignedArrow") {
-                        if (assignedSortUp == true) {
-                            assignedSortUp = false;
+                    } else if (e.target.id == "projArrow") {
+                        if (projSortUp == true) {
+                            projSortUp = false;
                             //clear all other arrows
                             taskArrow.src = "";
                             dueArrow.src = "";
                             statusArrow.src = "";
                             //sort down
-                            assignedArrow.src = "/images/down.png"
-                            sortList(taskList, "assigneddown");
+                            projArrow.src = "/images/down.png"
+                            sortList(taskList, "projdown");
                             renderTable(taskList);
                         } else {
-                            assignedSortUp = true;
+                            projSortUp = true;
                             //clear all other arrows
                             taskArrow.src = "";
                             dueArrow.src = "";
                             statusArrow.src = "";
                             //sort up
-                            assignedArrow.src = "/images/up.png"
-                            sortList(taskList, "assignedup");
+                            projArrow.src = "/images/up.png"
+                            sortList(taskList, "projup");
                             renderTable(taskList);
                         }
                     } else if (e.target.id == "dueArrow") {
                         if (dueSortUp == true) {
                             dueSortUp = false;
                             //clear all other arrows
-                            assignedArrow.src = "";
+                            projArrow.src = "";
                             taskArrow.src = "";
                             statusArrow.src = "";
                             //sort down
@@ -511,7 +261,7 @@
                         } else {
                             dueSortUp = true;
                             //clear all other arrows
-                            assignedArrow.src = "";
+                            projArrow.src = "";
                             taskArrow.src = "";
                             statusArrow.src = "";
                             //sort up
@@ -523,7 +273,7 @@
                         if (statusSortUp == true) {
                             statusSortUp = false;
                             //clear all other arrows
-                            assignedArrow.src = "";
+                            projArrow.src = "";
                             dueArrow.src = "";
                             taskArrow.src = "";
                             //sort down
@@ -533,7 +283,7 @@
                         } else {
                             statusSortUp = true;
                             //clear all other arrows
-                            assignedArrow.src = "";
+                            projArrow.src = "";
                             dueArrow.src = "";
                             taskArrow.src = "";
                             //sort up
@@ -544,21 +294,6 @@
                     }
 
                 }
-
-                function iconClick(e) {
-                    if (e.target.id == "taskIcon") {
-                        console.log("taskicon");
-                        if (taskOpen) {
-                            taskOpen = false;
-                            //add expand icon
-                            taskIcon.src = "/images/expand.png"
-                        } else {
-                            taskOpen = true;
-                            taskIcon.src = "/images/collapse.png"
-                        }
-                    }
-                }
-
 
 
                 function renderTable(taskList) {
@@ -577,9 +312,12 @@
                         let td2 = document.createElement('td');
                         let td3 = document.createElement('td');
                         let td4 = document.createElement('td');
+                        let pa = document.createElement('a');
 
                         td1.innerHTML = taskList[i].name;
-                        td2.innerHTML = taskList[i].assignedTo.name;
+                        pa.href = "/projects/" + taskList[i].project._id;
+                        pa.innerText = taskList[i].project.name;
+                        td2.appendChild(pa);
                         td3.innerHTML = taskList[i].due.slice(0, 10);
                         td4.innerHTML = taskList[i].status;
 
@@ -592,16 +330,47 @@
 
                 }
 
+                function renderGraph(icebox, current, completed) {
+                    myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Icebox', 'Current', 'Completed'],
+                            datasets: [{
+                                label: "",
+                                data: [icebox, current, completed],
+                                backgroundColor: [
+                                    'rgba(206, 150, 251, 0.2)',
+                                    'rgba(255, 143, 207, 0.2)',
+                                    'rgba(0, 194, 186, 0.2)'
+                                ],
+                                borderColor: [
+                                    'rgba(206, 150, 251, 1)',
+                                    'rgba(255, 143, 207, 1)',
+                                    'rgba(0, 194, 186, 1)'
+                                ],
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
 
-                async function projFilter(people, status) {
-                    const endpoint = '/projFilter';
+                }
+
+
+                async function dashFilter(projects, status) {
+                    const endpoint = '/dashFilter';
                     taskList = await fetch(endpoint, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            people,
-                            status,
-                            project: projectId.defaultValue
+                            projects,
+                            status
                         })
                     }).then(res => res.json());
 
@@ -617,8 +386,13 @@
                             completed++;
                         }
                     }
-                    
+                    if (myChart) {
+                        myChart.destroy();
+                    }
+                    //sort here
+
                     renderTable(taskList);
+                    renderGraph(icebox, current, completed);
                 }
 
                 function sortList(list, sort) {
@@ -655,7 +429,7 @@
                             list[minIndex] = temp;
                         }
                         list.reverse();
-                    } else if (sort == "peopledown") {
+                    } else if (sort == "projdown") {
                         for (let i = 0; i < list.length; i++) {
                             let min = list[i].project.name;
                             let minIndex = i;
@@ -671,7 +445,7 @@
                             list[minIndex] = temp;
                         }
                         list.reverse();
-                    } else if (sort == "peopleup") {
+                    } else if (sort == "projup") {
                         for (let i = 0; i < list.length; i++) {
                             let min = list[i].project.name;
                             let minIndex = i;
@@ -758,9 +532,4 @@
                 }
 
                 //function call
-                projFilter(peopleChecked, status);
-            </script>
-
-            </body>
-
-            </html>
+                dashFilter(projChecked, status);
