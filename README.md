@@ -1,7 +1,7 @@
 
 # PICNIC PROJECT MANAGEMENT
 
-A project management app to help keep track of projects and tasks. It allows the user to see which tasks are assigned to them across all projects and provides task breakdowns within each project. The app provides sorting and filtering of tasks as well as task status visualization. 
+A project management app to help keep track of projects and tasks. The app allows the user to see which tasks are assigned to them across all projects and provides task breakdowns within each project. The app provides sorting and filtering of tasks as well as task status visualization. 
 
 
 ## Technologies Used
@@ -11,6 +11,10 @@ A project management app to help keep track of projects and tasks. It allows the
 * MongoDB/Mongoose
 
 ## Getting Started
+
+* https://picnic-proj-management.herokuapp.com/
+
+* https://trello.com/b/PvC937Qw/picnic
 
 
 ## Next Steps
