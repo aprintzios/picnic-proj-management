@@ -12,9 +12,9 @@ A project management app to help keep track of projects and tasks. The app allow
 
 ## Getting Started
 
-* https://picnic-proj-management.herokuapp.com/
+* Deployed App: https://picnic-proj-management.herokuapp.com/
 
-* https://trello.com/b/PvC937Qw/picnic
+* Project Planning Board: https://trello.com/b/PvC937Qw/picnic
 
 
 ## Next Steps
