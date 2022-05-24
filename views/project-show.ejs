@@ -50,27 +50,6 @@
                                 </label>
                             </p>
                         </div>
-                        <!-- <div>
-                            Filter by Status
-                            <p>
-                                <label>
-                                    <input name="icebox" type="checkbox" />
-                                    <span>Icebox</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input name="current" type="checkbox" />
-                                    <span>Current/MVP</span>
-                                </label>
-                            </p>
-                            <p>
-                                <label>
-                                    <input name="completed" type="checkbox" />
-                                    <span>Completed</span>
-                                </label>
-                            </p>
-                        </div> -->
                     </form>
 
                     <div>
@@ -126,38 +105,7 @@
                             <th id="statusHeader">Status <img id="statusArrow" class="sortArrow" src="" alt="">
                             </th>
                             <th id="actionHeader">Actions</th>
-                            <!-- <%if(tasks){%>
-                                <% for (let i=0; i<tasks.length; i++){%>
-                                    <tr class="dasboardTaskRow">
-                                        <td class="dasboardTaskCell">
-                                            <%=tasks[i].name%>
-                                        </td>
-                                        <td class="dasboardTaskCell">
-                                            <%=tasks[i].assignedTo.name%>
-                                        </td>
-                                        <td class="dasboardTaskCell">
-                                            <%=tasks[i].due.toDateString()%>
-                                        </td>
-                                        <td class="dasboardTaskCell">
-                                            <%=tasks[i].status%>
-                                        </td>
-                                        <td class="dasboardTaskCell">
-                                            <a href="/projects/<%=project._id%>/task/<%=tasks[i]._id%>">
-                                                <img class="updateImg" src="/images/edit.png" alt="editTask">
-                                            </a>
-                                            <form method="POST"
-                                                action="/projects/<%=project._id%>/task/<%=tasks[i]._id%>/destroy?_method=DELETE">
-                                                <button class="updateBtn"> <img class="updateImg"
-                                                        src="/images/delete.png" alt="deleteTask">
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                    <%}%>
-                                        <%}%> -->
-
-
-
+                            
                         </table>
 
                     </div>
@@ -234,11 +182,6 @@
                 let status = [];
 
                 //cached elements
-                // let groupHeader = document.getElementById("groupHeader");
-                // let groupIcon = document.getElementById("groupIcon");
-                // groupHeader.addEventListener("click", headerClick);
-                // groupIcon.addEventListener("click", iconClick);
-
                 let taskDiv = document.getElementById("taskDiv");
                 let taskIcon = document.getElementById("taskIcon");
                 taskDiv.addEventListener("click", headerClick);
