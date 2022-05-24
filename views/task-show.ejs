@@ -1,13 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MY PROJECT</title>
-</head>
-<body> -->
-
 <%- include('./partials/header.ejs'); %>
 
     <%- include('./partials/nav.ejs'); %>
@@ -42,9 +32,9 @@
                             <input required value="<%=task.due%>" type="date" id="dueDate" name="dueDate">
                             <select required name="status" id="status">
                                 <option disabled value="<%=task.due%>">--Please choose an option--</option>
-                                <option value="Icebox">Icebox</option>
-                                <option value="Current/MVP">Current/MVP</option>
-                                <option value="Completed">Completed</option>
+                                <option value="icebox">Icebox</option>
+                                <option value="current">Current/MVP</option>
+                                <option value="completed">Completed</option>
                             </select>
                             <label>Status</label>
                             <button class="waves-effect waves-light btn">Submit</button>

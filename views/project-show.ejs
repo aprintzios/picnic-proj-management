@@ -345,7 +345,6 @@
                 }
 
                 function headerClick(e) {
-                    console.log("in header click");
                     if (e.target.id == "taskDiv") {
                         if (taskOpen) {
                             taskOpen = false;
@@ -424,9 +423,7 @@
                             renderTable(taskList);
                         }
                     } else if (e.target.id == "statusHeader") {
-                        console.log("status header");
                         if (statusSortUp == true) {
-                            console.log("sort down");
                             statusSortUp = false;
                             //clear all other arrows
                             assignedArrow.src = "";
@@ -437,7 +434,6 @@
                             sortList(taskList, "statusdown");
                             renderTable(taskList);
                         } else {
-                            console.log("sort up");
                             statusSortUp = true;
                             //clear all other arrows
                             assignedArrow.src = "";
@@ -548,7 +544,6 @@
 
                 function iconClick(e) {
                     if (e.target.id == "taskIcon") {
-                        console.log("taskicon");
                         if (taskOpen) {
                             taskOpen = false;
                             //add expand icon
@@ -691,23 +686,22 @@
                             list[i] = list[minIndex];
                             list[minIndex] = temp;
                         }
-                        list.reverse();
                     } else if (sort == "assignedup") {
                         for (let i = 0; i < list.length; i++) {
-                            let min = list[i].project.name;
+                            let min = list[i].assignedTo.name;
                             let minIndex = i;
                             for (let j = i + 1; j < list.length; j++) {
-                                if (list[j].project.name < min) {
-                                    min = list[j].project.name;
+                                if (list[j].assignedTo.name < min) {
+                                    min = list[j].assignedTo.name;
                                     minIndex = j;
                                 }
-
                             }
                             //swap i and minindex
                             let temp = list[i];
                             list[i] = list[minIndex];
                             list[minIndex] = temp;
                         }
+                        list.reverse();
                     } else if (sort == "datedown") {
                         for (let i = 0; i < list.length; i++) {
                             let min = list[i].due;
@@ -724,9 +718,7 @@
                             list[minIndex] = temp;
                         }
 
-                        console.log("proj down sort", list);
                     } else if (sort == "dateup") {
-                        console.log("function due up");
                         for (let i = 0; i < list.length; i++) {
                             let min = list[i].due;
                             let minIndex = i;
@@ -758,6 +750,8 @@
                             list[i] = list[minIndex];
                             list[minIndex] = temp;
                         }
+                        list.reverse();
+
                     } else if (sort == "statusup") {
                         for (let i = 0; i < list.length; i++) {
                             let min = list[i].status;
@@ -774,12 +768,13 @@
                             list[i] = list[minIndex];
                             list[minIndex] = temp;
                         }
-                        list.reverse();
                     }
                 }
 
                 //function call
                 projFilter(peopleChecked, status);
+                sortList(taskList, "taskdown");
+                renderTable(taskList);
             </script>
 
             </body>
