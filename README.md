@@ -4,6 +4,9 @@
 A project management app to help keep track of projects and tasks. The app allows the user to see which tasks are assigned to them across all projects and provides task breakdowns within each project. The app provides sorting and filtering of tasks as well as task status visualization. 
 
 
+    <img src="./public/images/screenshots/landing.png" width="400"> <br>
+
+
 ## Technologies Used
 
 * HTML/CSS/JavaScript
@@ -18,3 +21,5 @@ A project management app to help keep track of projects and tasks. The app allow
 
 
 ## Next Steps
+
+* Add filter by date functionality
